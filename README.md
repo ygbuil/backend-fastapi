@@ -1,5 +1,5 @@
 # Backend-FastAPI
-This is the for a travel app, where user can log in, post experencies of their trips, see other users experiences and all perform various CRUD operations.
+This is the for a travel app, where user can log in, post experencies of their trips, see other users experiences and perform various CRUD operations.
 
 ### Installation
 
