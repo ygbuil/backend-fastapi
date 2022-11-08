@@ -50,8 +50,7 @@ def update_user(db_session: Session, user_update_info: UserUpdateInfo):
 
 
 def delete_user(db_session: Session, user_id: str):
-    user = get_user_by_id(db_session=db_session,
-                          user_id=user_id)
+    user = get_user_by_id(db_session=db_session, user_id=user_id)
 
     db_session.delete(user)
     db_session.commit()

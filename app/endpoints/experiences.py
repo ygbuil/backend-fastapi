@@ -19,10 +19,10 @@ experiences_router = APIRouter(prefix='/experiences')
     '', response_model=ExperienceResponse, status_code=status.HTTP_201_CREATED
 )
 def create_experience(
-        experience_to_create: NewExperience,
-        verified_user: int = Depends(oauth2.get_verified_user),
-        db_session=Depends(database.get_db_session)
-    ):
+    experience_to_create: NewExperience,
+    verified_user: int = Depends(oauth2.get_verified_user),
+    db_session=Depends(database.get_db_session)
+):
     
     created_experience = experiences.create_experience(
         db_session=db_session, verified_user=verified_user,
@@ -37,8 +37,8 @@ def create_experience(
 
 @experiences_router.get('/{experience_id}', response_model=ExperienceResponse)
 def get_experience(
-        experience_id: str, db_session=Depends(database.get_db_session)
-    ):
+    experience_id: str, db_session=Depends(database.get_db_session)
+):
     experience = experiences.get_experience_by_id(
         db_session=db_session, experience_id=experience_id
     )
@@ -58,11 +58,10 @@ def get_experience(
 
 @experiences_router.get('', response_model=List[ExperienceResponse])
 def get_experience_by_filter(
-        limit: int = 10, skip: int = 0, title: Optional[str] = '', 
-        description: Optional[str] = '', location: Optional[str] = '',
-        rating: Optional[int] = None, db_session=Depends(database.get_db_session)
-    ):
-
+    limit: int = 10, skip: int = 0, title: Optional[str] = '', 
+    description: Optional[str] = '', location: Optional[str] = '',
+    rating: Optional[int] = None, db_session=Depends(database.get_db_session)
+):
     experiences_filtered = experiences.get_experience_by_filters(
         db_session=db_session, limit=limit, skip=skip, title=title,
         description=description, location=location, rating=rating
@@ -85,11 +84,10 @@ def get_experience_by_filter(
 
 @experiences_router.put('/{experience_id}', response_model=ExperienceResponse)
 def update_experience(
-        experience_update_info: ExperienceUpdateInfo,
-        verified_user: int = Depends(oauth2.get_verified_user),
-        db_session=Depends(database.get_db_session)
-    ):
-
+    experience_update_info: ExperienceUpdateInfo,
+    verified_user: int = Depends(oauth2.get_verified_user),
+    db_session=Depends(database.get_db_session)
+):
     experience = experiences.get_experience_by_id(
         db_session=db_session,
         experience_id=experience_update_info.experience_id
@@ -122,11 +120,10 @@ def update_experience(
     '/{experience_id}', response_model=ExperienceResponse
 )
 def delete_experience(
-        experience_id: str,
-        verified_user: int = Depends(oauth2.get_verified_user),
-        db_session=Depends(database.get_db_session)
-    ):
-
+    experience_id: str,
+    verified_user: int = Depends(oauth2.get_verified_user),
+    db_session=Depends(database.get_db_session)
+):
     experience = experiences.get_experience_by_id(
         db_session=db_session, experience_id=experience_id
     )

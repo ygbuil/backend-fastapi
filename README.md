@@ -1,16 +1,5 @@
-# XPlorer backend
-Backend for XPlorer project.
-
-## Getting started
-Follow this section steps to start contributing to the project.
-
-### Prerequisites
-
-- [python](https://python.org/)
-- [pre-commit](https://pre-commit.com/)
-  ```sh
-  pip install pre-commit
-  ```
+# Backend-FastAPI
+This is the for a travel app, where user can log in, post experencies of their trips, see other users experiences and all perform various CRUD operations.
 
 ### Installation
 

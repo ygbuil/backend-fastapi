@@ -17,10 +17,9 @@ def get_experience_by_id(db_session: Session, experience_id: str):
 
 
 def get_experience_by_filters(
-        db_session: Session, limit: int, skip: int, title: str,
-        description: str, location: str, rating: int
-    ):
-
+    db_session: Session, limit: int, skip: int, title: str,
+    description: str, location: str, rating: int
+):
     experiences = (
         db_session.query(ExperiencesTableItem).filter(
             *([ExperiencesTableItem.title.contains(title),
@@ -36,10 +35,9 @@ def get_experience_by_filters(
 
 
 def create_experience(
-        db_session: Session, verified_user: User,
-        experience_to_create: NewExperience
-    ):
-
+    db_session: Session, verified_user: User,
+    experience_to_create: NewExperience
+):
     experience = ExperiencesTableItem(
         user_id=str(verified_user.user_id), **experience_to_create.dict()
     )
@@ -57,9 +55,8 @@ def create_experience(
 
 
 def update_experience(
-        db_session: Session, experience_update_info: ExperienceUpdateInfo
-    ):
-
+    db_session: Session, experience_update_info: ExperienceUpdateInfo
+):
     experience = get_experience_by_id(
         db_session=db_session,
         experience_id=experience_update_info.experience_id
@@ -76,7 +73,6 @@ def update_experience(
 
 
 def delete_experience(db_session: Session, experience_id: str):
-    
     experience = get_experience_by_id(
         db_session=db_session, experience_id=experience_id
     )

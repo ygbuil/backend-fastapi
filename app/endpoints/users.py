@@ -15,8 +15,8 @@ users_router = APIRouter(prefix='/users')
     '', response_model=UserResponse, status_code=status.HTTP_201_CREATED
 )
 def create_user(
-        user_to_create: NewUser, db_session=Depends(database.get_db_session)
-    ):
+    user_to_create: NewUser, db_session=Depends(database.get_db_session)
+):
     user = users.get_user_by_name(
         db_session=db_session, username=user_to_create.username
     )
@@ -35,8 +35,8 @@ def create_user(
 
 @users_router.get('/{user_id}', response_model=UserResponse)
 def get_user(
-        user_id: str, db_session=Depends(database.get_db_session)
-    ):
+    user_id: str, db_session=Depends(database.get_db_session)
+):
     user = users.get_user_by_id(
         db_session=db_session, user_id=user_id
     )
@@ -51,10 +51,10 @@ def get_user(
 
 @users_router.put('/{user_id}', response_model=UserResponse)
 def update_user(
-        user_id: str, user_update_info: UserUpdateInfo,
-        verified_user=Depends(oauth2.get_verified_user),
-        db_session=Depends(database.get_db_session),
-    ): 
+    user_id: str, user_update_info: UserUpdateInfo,
+    verified_user=Depends(oauth2.get_verified_user),
+    db_session=Depends(database.get_db_session),
+): 
     try:
         user_to_update = users.get_user_by_id(
             db_session=db_session, user_id=user_id
@@ -84,10 +84,9 @@ def update_user(
 
 @users_router.delete('/{user_id}', response_model=UserResponse)
 def delete_user(
-        user_id: str, verified_user=Depends(oauth2.get_verified_user),
-        db_session=Depends(database.get_db_session)
-    ):
-
+    user_id: str, verified_user=Depends(oauth2.get_verified_user),
+    db_session=Depends(database.get_db_session)
+):
     user_to_delete = users.get_user_by_id(
         db_session=db_session, user_id=user_id
     )
