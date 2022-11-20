@@ -22,4 +22,3 @@ app.add_middleware(
 )
 
 # uvicorn app.main:app --host 0.0.0.0 --port 5500 --reload
-# 16:33:00
