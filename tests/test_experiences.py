@@ -5,7 +5,8 @@ def test_create_experience(client, test_token_1):
 
     response = client.post('/experiences', json={
         'title': 'Beach', 'description': 'A sunny day',
-        'location': 'Costa Brava', 'rating': 5
+        'location': 'Costa Brava', 'lat': 12.58658855, 'lon': 54.39338383,
+        'rating': 5
     })
 
     assert response.status_code == 201

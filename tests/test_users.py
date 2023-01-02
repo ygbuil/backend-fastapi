@@ -1,7 +1,8 @@
 def test_create_user(client):
     response = client.post('/users', json={
         'username': 'test_user', 'password': '123',
-        'location': 'test_location', 'color': 'test_color'
+        'location': 'test_location', 'lat': 12.58658855, 'lon': 54.39338383,
+        'color': 'test_color'
     })
 
     assert response.status_code == 201

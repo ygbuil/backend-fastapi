@@ -10,6 +10,8 @@ class NewUser(BaseModel):
     username: str
     color: str
     location: str
+    lat: float
+    lon: float
     password: str
 
 class User(NewUser):
@@ -21,6 +23,8 @@ class UserResponse(BaseModel):
     username: str
     color: str
     location: str
+    lat: float
+    lon: float
     created_at: datetime
 
     class Config:
@@ -31,6 +35,8 @@ class UserUpdateInfo(BaseModel):
     username: Optional[str]
     color: Optional[str]
     location: Optional[str]
+    lat: Optional[str]
+    lon: Optional[str]
     password: Optional[str]
 
 
@@ -39,6 +45,8 @@ class NewExperience(BaseModel):
     title: str
     description: str
     location: str
+    lat: float
+    lon: float
     rating: int
 
 class ExperienceResponse(NewExperience):
@@ -57,6 +65,8 @@ class ExperienceUpdateInfo(BaseModel):
     title: Optional[str]
     description: Optional[str]
     location: Optional[str]
+    lat: Optional[str]
+    lon: Optional[str]
     rating: Optional[str]
 
 class ExperienceFilters(BaseModel):

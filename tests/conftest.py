@@ -21,8 +21,8 @@ def client():
 def test_user_1(client):
     response = client.post(
         '/users', json={
-            'username': 'user_1', 'password': '123',
-            'location': 'location_1', 'color': 'color_1'
+            'username': 'user_1', 'password': '123', 'location': 'location_1',
+            'lat': 12.58658855, 'lon': 54.39338383, 'color': 'color_1'
         }
     )
 
@@ -38,8 +38,8 @@ def test_user_1(client):
 def test_user_2(client):
     response = client.post(
         '/users', json={
-            'username': 'user_2', 'password': '123',
-            'location': 'location_2', 'color': 'color_2'
+            'username': 'user_2', 'password': '123', 'location': 'location_2',
+            'lat': 12.58658855, 'lon': 54.39338383, 'color': 'color_2'
         }
     )
 
@@ -80,7 +80,8 @@ def test_experience_1(client, test_token_1):
     response = client.post(
         '/experiences', json={
             'title': 'Beach', 'description': 'A sunny day',
-            'location': 'Costa Brava', 'rating': 5
+            'location': 'Costa Brava', 'lat': 12.58658855, 'lon': 54.39338383,
+            'rating': 5
         }
     )
 

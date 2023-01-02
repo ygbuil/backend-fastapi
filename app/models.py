@@ -1,6 +1,6 @@
 # libraries
 import uuid
-from sqlalchemy import Column, String, Integer, ForeignKey
+from sqlalchemy import Column, String, Integer, ForeignKey, FLOAT
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql.expression import text
 from sqlalchemy.orm import relationship
@@ -18,6 +18,8 @@ class UsersTableItem(Base):
     password = Column(String, nullable=False)
     color = Column(String, nullable=False)
     location = Column(String, nullable=False)
+    lat = Column(FLOAT(precision=32), nullable=False)
+    lon = Column(FLOAT(precision=32), nullable=False)
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False,
         server_default=text('now()')
@@ -37,6 +39,8 @@ class ExperiencesTableItem(Base):
     description = Column(String, nullable=False)
     location = Column(String, nullable=False)
     rating = Column(Integer, nullable=False)
+    lat = Column(FLOAT(precision=32), nullable=False)
+    lon = Column(FLOAT(precision=32), nullable=False)
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default=text('now()')
     )

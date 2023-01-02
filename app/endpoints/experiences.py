@@ -58,13 +58,15 @@ def get_experience(
 
 @experiences_router.get('', response_model=List[ExperienceResponse])
 def get_experience_by_filter(
-    limit: int = 10, skip: int = 0, title: Optional[str] = '', 
-    description: Optional[str] = '', location: Optional[str] = '',
+    limit: int = 10, skip: int = 0, experience: Optional[str]= '',
+    title: Optional[str] = '', description: Optional[str] = '',
+    location: Optional[str] = '', user: Optional[str] = None,
     rating: Optional[int] = None, db_session=Depends(database.get_db_session)
 ):
     experiences_filtered = experiences.get_experience_by_filters(
-        db_session=db_session, limit=limit, skip=skip, title=title,
-        description=description, location=location, rating=rating
+        db_session=db_session, limit=limit, skip=skip, experience=experience,
+        title=title, description=description, location=location, user=user,
+        rating=rating
     )
 
     if experiences_filtered is None:

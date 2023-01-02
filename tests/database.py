@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 # local libraries
-from app.main import app
+from app.app import app
 from app import database
 from app.config import settings
 
