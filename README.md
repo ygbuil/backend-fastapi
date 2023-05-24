@@ -24,3 +24,9 @@ Here are some snippeds of how the app looks like:
 
 * Post experience page:
 ![alt_text](https://github.com/ygbuil/Backend-FastAPI/blob/master/images/post_experience.png)
+
+## How to use it
+
+* Clone the repo.
+* Run `uvicorn app.app:app --port 5500 --reload` in the source directory of the project.
+* To run test, you can run the `pytest` command in the source directory of the project.

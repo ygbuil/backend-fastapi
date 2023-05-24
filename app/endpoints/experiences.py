@@ -23,7 +23,6 @@ def create_experience(
     verified_user: int = Depends(oauth2.get_verified_user),
     db_session=Depends(database.get_db_session)
 ):
-    
     created_experience = experiences.create_experience(
         db_session=db_session, verified_user=verified_user,
         experience_to_create=experience_to_create
