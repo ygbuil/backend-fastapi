@@ -27,6 +27,7 @@ Here are some snippeds of how the app looks like:
 
 ## How to use it
 
-* Clone the repo.
+* Clone the repository.
+* Create a virtual enviroment and install the requirements using `pip install -r requirements.txt`
 * Run `uvicorn app.app:app --port 5500 --reload` in the source directory of the project.
 * To run test, you can run the `pytest` command in the source directory of the project.
