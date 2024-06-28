@@ -1,9 +1,7 @@
 # Backend-FastAPI
 
 ## What is Xplorer?
-Xplorer is a social media travel app where you can share the places you have visited on your trips with other app members, see where your friends have traveled, and keep all your travel experiences stored in your profile. I developed this project in collaboration with Martí, a friend of mine. He was in charge of the Frontend (developed with Vue.js), and I developed all the Backend (using with FastAPI), which is what is posted in this repository.
-
-The app has been deployed using Vercel, and you can try it yourself here (hopefully by the time you read this, we are still maintaining the app): https://xplorer-lake.vercel.app/
+Xplorer is a social media travel app where you can share the places you have visited on your trips with other app members, see where your friends have traveled, and keep all your travel experiences stored in your profile. I developed this project in collaboration with Martí, a friend of mine. He was in charge of the frontend, developed with Vue.js, and I developed the backend using with FastAPI, which is what the content of this repository.
 
 ## Features
 
