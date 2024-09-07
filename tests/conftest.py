@@ -24,7 +24,7 @@ def test_user_1(client):
         "/users",
         json={
             "username": "user_1",
-            "password": "123",
+            "password": "pw1",
             "location": "location_1",
             "lat": 12.58658855,
             "lon": 54.39338383,
@@ -35,7 +35,7 @@ def test_user_1(client):
     assert response.status_code == 201
 
     test_user_1 = response.json()
-    test_user_1["password"] = "123"
+    test_user_1["password"] = "pw1"
 
     return test_user_1
 
@@ -46,7 +46,7 @@ def test_user_2(client):
         "/users",
         json={
             "username": "user_2",
-            "password": "123",
+            "password": "pw2",
             "location": "location_2",
             "lat": 12.58658855,
             "lon": 54.39338383,
@@ -57,7 +57,7 @@ def test_user_2(client):
     assert response.status_code == 201
 
     test_user_2 = response.json()
-    test_user_2["password"] = "123"
+    test_user_2["password"] = "pw2"
 
     return test_user_2
 

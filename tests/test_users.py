@@ -32,11 +32,19 @@ def test_update_user(client, test_user_1, test_token_1):
 
     response = client.put(
         f"/users/{test_user_1['user_id']}",
-        json={"user_id": test_user_1["user_id"], "color": "red"},
+        json={
+            "user_id": test_user_1["user_id"],
+            "username": test_user_1["user_id"],
+            "color": "red",
+            "location": test_user_1["location"],
+            "lat": test_user_1["lat"],
+            "lon": test_user_1["lon"],
+            "password": test_user_1["password"]
+        },
     )
 
-    assert response.json()["color"] == "red"
     assert response.status_code == 200
+    assert response.json()["color"] == "red"
 
 
 def test_update_user_unauthorized(client, test_user_1, test_token_2):
@@ -44,12 +52,15 @@ def test_update_user_unauthorized(client, test_user_1, test_token_2):
 
     response = client.put(
         f"/users/{test_user_1['user_id']}",
-        json={"user_id": test_user_1["user_id"], "color": "red"},
-    )
-
-    response = client.put(
-        f"/users/{test_user_1['user_id']}",
-        json={"user_id": test_user_1["user_id"], "color": "red"},
+        json={
+            "user_id": test_user_1["user_id"],
+            "username": test_user_1["user_id"],
+            "color": "red",
+            "location": test_user_1["location"],
+            "lat": test_user_1["lat"],
+            "lon": test_user_1["lon"],
+            "password": test_user_1["password"]
+        },
     )
 
     assert response.status_code == 403

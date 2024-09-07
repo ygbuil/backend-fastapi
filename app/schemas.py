@@ -39,8 +39,8 @@ class UserUpdateInfo(BaseModel):
     username: Optional[str]
     color: Optional[str]
     location: Optional[str]
-    lat: Optional[str]
-    lon: Optional[str]
+    lat: Optional[float]
+    lon: Optional[float]
     password: Optional[str]
 
 
