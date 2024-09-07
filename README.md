@@ -27,5 +27,7 @@ Here are some snippeds of how the app looks like:
 
 * Clone the repository.
 * Create a virtual enviroment and install the requirements using `pip install -r requirements.txt`
-* Run `uvicorn app.app:app --port 5500 --reload` in the source directory of the project.
+* Start your PostgreSQL database and create a `.env` file in the root directory of the project defining your database credentials there (a template called `.env_dummy` has been provided).
+* Run `python db_init.py` to autmatically create the tables that the project uses in your PostgreSQL.
+* Run `uvicorn app.app:app --port 5500 --reload` in the source directory of the project to strat the backend service.
 * To run test, you can run the `pytest` command in the source directory of the project.
