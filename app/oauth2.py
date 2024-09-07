@@ -1,4 +1,3 @@
-# libraries
 from datetime import datetime
 from uuid import UUID
 
@@ -8,16 +7,15 @@ from jose import JWTError, jwt
 
 from app.config import settings
 from app.database import get_db_session
-
-# local libraries
 from app.functions.crud import users
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
-def create_token(username: str, user_id: UUID, color: str, expiration_time):
+def create_token(username: str, user_id: UUID, color: str, expiration_time: int) -> str:
+    """Create token for the user."""
     expire_date = datetime.utcnow() + expiration_time
-    encoded_token = jwt.encode(
+    return jwt.encode(
         {
             "username": username,
             "user_id": str(user_id),
@@ -28,15 +26,15 @@ def create_token(username: str, user_id: UUID, color: str, expiration_time):
         algorithm="HS256",
     )
 
-    return encoded_token
 
-
-def get_verified_user(token: str = Depends(oauth2_scheme), db_session=Depends(get_db_session)):
+def get_verified_user(
+    token: str = Depends(oauth2_scheme),
+    db_session: Depends = Depends(get_db_session),  # noqa: B008
+) -> dict:
+    """Get the authorised user for the received token."""
     try:
         payload = jwt.decode(token, settings.secret_key, algorithms="HS256")
-        verified_user = users.get_user_by_id(db_session=db_session, user_id=payload.get("user_id"))
-
-        return verified_user
+        return users.get_user_by_id(db_session=db_session, user_id=payload.get("user_id"))
 
     except JWTError:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, detail="Could not validate token")

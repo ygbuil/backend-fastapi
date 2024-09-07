@@ -1,4 +1,4 @@
-"""Config."""
+"""Database config."""
 
 import os
 

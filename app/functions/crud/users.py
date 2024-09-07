@@ -1,9 +1,6 @@
-# libraries
 from sqlalchemy.orm import Session
 
 from app.functions import utils
-
-# local libraries
 from app.models import UsersTableItem
 from app.schemas import NewUser, UserUpdateInfo
 

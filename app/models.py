@@ -1,4 +1,5 @@
-# libraries
+"""Database data model."""
+
 import uuid
 
 from sqlalchemy import FLOAT, Column, ForeignKey, Integer, String
@@ -7,7 +8,6 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import text
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 
-# local libraries
 from app.database import Base
 
 

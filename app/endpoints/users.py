@@ -1,7 +1,7 @@
-# libraries
+"""Users endpoints."""
+
 from fastapi import APIRouter, Depends, HTTPException, status
 
-# local libraries
 from app import database, oauth2
 from app.functions.crud import users
 from app.schemas import NewUser, UserResponse, UserUpdateInfo
@@ -10,19 +10,20 @@ users_router = APIRouter(prefix="/users")
 
 
 @users_router.post("", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
-def create_user(user_to_create: NewUser, db_session=Depends(database.get_db_session)):
+def create_user(
+    user_to_create: NewUser,
+    db_session: Depends = Depends(database.get_db_session),
+) -> dict:
     user = users.get_user_by_name(db_session=db_session, username=user_to_create.username)
 
     if user is not None:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="User already exists")
 
-    created_user = users.create_user(db_session=db_session, user_to_create=user_to_create)
-
-    return created_user
+    return users.create_user(db_session=db_session, user_to_create=user_to_create)
 
 
 @users_router.get("/{user_id}", response_model=UserResponse)
-def get_user(user_id: str, db_session=Depends(database.get_db_session)):
+def get_user(user_id: str, db_session: Depends = Depends(database.get_db_session)) -> dict:
     user = users.get_user_by_id(db_session=db_session, user_id=user_id)
 
     if user is None:
@@ -35,9 +36,9 @@ def get_user(user_id: str, db_session=Depends(database.get_db_session)):
 def update_user(
     user_id: str,
     user_update_info: UserUpdateInfo,
-    verified_user=Depends(oauth2.get_verified_user),
-    db_session=Depends(database.get_db_session),
-):
+    verified_user: Depends = Depends(oauth2.get_verified_user),  # noqa: B008
+    db_session: Depends = Depends(database.get_db_session),  # noqa: B008
+) -> dict:
     try:
         user_to_update = users.get_user_by_id(db_session=db_session, user_id=user_id)
     except Exception:
@@ -52,17 +53,15 @@ def update_user(
             detail="Not authorized to perform requested action",
         )
 
-    updated_user = users.update_user(db_session=db_session, user_update_info=user_update_info)
-
-    return updated_user
+    return users.update_user(db_session=db_session, user_update_info=user_update_info)
 
 
 @users_router.delete("/{user_id}", response_model=UserResponse)
 def delete_user(
     user_id: str,
-    verified_user=Depends(oauth2.get_verified_user),
-    db_session=Depends(database.get_db_session),
-):
+    verified_user: Depends = Depends(oauth2.get_verified_user),  # noqa: B008
+    db_session: Depends = Depends(database.get_db_session),  # noqa: B008
+) -> dict:
     user_to_delete = users.get_user_by_id(db_session=db_session, user_id=user_id)
 
     if user_to_delete is None:
@@ -74,6 +73,4 @@ def delete_user(
             detail="Not authorized to perform requested action",
         )
 
-    deleted_user = users.delete_user(db_session=db_session, user_id=user_to_delete.user_id)
-
-    return deleted_user
+    return users.delete_user(db_session=db_session, user_id=user_to_delete.user_id)

@@ -1,11 +1,10 @@
-# libraries
+"""Module to create database tables."""
+
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session, sessionmaker
 
 from app import database
-
-# local libraries
 from app.app import app
 from app.config import settings
 
@@ -27,8 +26,8 @@ Base = declarative_base()
 Base.metadata.create_all(bind=engine)
 
 
-# create a session with SessionLocal
 def override_get_db_session() -> Session:
+    """Create a session with SessionLocal."""
     db_session = TestingSessionLocal()
     try:
         yield db_session

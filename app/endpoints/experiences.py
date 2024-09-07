@@ -1,9 +1,9 @@
-# libraries
+"""Experiences endpoints."""
+
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-# local libraries
 from app import database, oauth2
 from app.functions import utils
 from app.functions.crud import experiences
@@ -15,24 +15,25 @@ experiences_router = APIRouter(prefix="/experiences")
 @experiences_router.post("", response_model=ExperienceResponse, status_code=status.HTTP_201_CREATED)
 def create_experience(
     experience_to_create: NewExperience,
-    verified_user: int = Depends(oauth2.get_verified_user),
-    db_session=Depends(database.get_db_session),
-):
+    verified_user: Depends = Depends(oauth2.get_verified_user),  # noqa: B008
+    db_session: Depends = Depends(database.get_db_session),  # noqa: B008
+) -> dict:
     created_experience = experiences.create_experience(
         db_session=db_session,
         verified_user=verified_user,
         experience_to_create=experience_to_create,
     )
-    created_experience = utils.add_lifetime_to_experience(
+    return utils.add_lifetime_to_experience(
         experience=created_experience,
         created_at=created_experience.created_at,
     )
 
-    return created_experience
-
 
 @experiences_router.get("/{experience_id}", response_model=ExperienceResponse)
-def get_experience(experience_id: str, db_session=Depends(database.get_db_session)):
+def get_experience(
+    experience_id: str,
+    db_session: Depends = Depends(database.get_db_session),  # noqa: B008
+) -> dict:
     experience = experiences.get_experience_by_id(
         db_session=db_session,
         experience_id=experience_id,
@@ -41,12 +42,10 @@ def get_experience(experience_id: str, db_session=Depends(database.get_db_sessio
     if experience is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Experience not found")
 
-    experience = utils.add_lifetime_to_experience(
+    return utils.add_lifetime_to_experience(
         experience=experience,
         created_at=experience.created_at,
     )
-
-    return experience
 
 
 @experiences_router.get("", response_model=List[ExperienceResponse])
@@ -59,8 +58,8 @@ def get_experience_by_filter(
     location: Optional[str] = "",
     user: Optional[str] = None,
     rating: Optional[int] = None,
-    db_session=Depends(database.get_db_session),
-):
+    db_session: Depends = Depends(database.get_db_session),  # noqa: B008
+) -> dict:
     experiences_filtered = experiences.get_experience_by_filters(
         db_session=db_session,
         limit=limit,
@@ -89,9 +88,9 @@ def get_experience_by_filter(
 @experiences_router.put("/{experience_id}", response_model=ExperienceResponse)
 def update_experience(
     experience_update_info: ExperienceUpdateInfo,
-    verified_user: int = Depends(oauth2.get_verified_user),
-    db_session=Depends(database.get_db_session),
-):
+    verified_user: Depends = Depends(oauth2.get_verified_user),  # noqa: B008
+    db_session: Depends = Depends(database.get_db_session),  # noqa: B008
+) -> dict:
     experience = experiences.get_experience_by_id(
         db_session=db_session,
         experience_id=experience_update_info.experience_id,
@@ -111,20 +110,18 @@ def update_experience(
         experience_update_info=experience_update_info,
     )
 
-    updated_experience = utils.add_lifetime_to_experience(
+    return utils.add_lifetime_to_experience(
         experience=updated_experience,
         created_at=updated_experience.created_at,
     )
-
-    return updated_experience
 
 
 @experiences_router.delete("/{experience_id}", response_model=ExperienceResponse)
 def delete_experience(
     experience_id: str,
-    verified_user: int = Depends(oauth2.get_verified_user),
-    db_session=Depends(database.get_db_session),
-):
+    verified_user: Depends = Depends(oauth2.get_verified_user),  # noqa: B008
+    db_session: Depends = Depends(database.get_db_session),  # noqa: B008
+) -> dict:
     experience = experiences.get_experience_by_id(
         db_session=db_session,
         experience_id=experience_id,
@@ -144,9 +141,7 @@ def delete_experience(
         experience_id=experience_id,
     )
 
-    deleted_experience = utils.add_lifetime_to_experience(
+    return utils.add_lifetime_to_experience(
         experience=deleted_experience,
         created_at=deleted_experience.created_at,
     )
-
-    return deleted_experience

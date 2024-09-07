@@ -1,4 +1,3 @@
-# libraries
 from datetime import datetime
 from typing import Optional
 from uuid import UUID
@@ -6,8 +5,9 @@ from uuid import UUID
 from pydantic import BaseModel
 
 
-# users
 class NewUser(BaseModel):
+    """NewExperience schema."""
+
     username: str
     color: str
     location: str
@@ -17,11 +17,15 @@ class NewUser(BaseModel):
 
 
 class User(NewUser):
+    """NewExperience schema."""
+
     user_id: UUID
     created_at: datetime
 
 
 class UserResponse(BaseModel):
+    """NewExperience data model."""
+
     user_id: UUID
     username: str
     color: str
@@ -35,6 +39,8 @@ class UserResponse(BaseModel):
 
 
 class UserUpdateInfo(BaseModel):
+    """UserUpdateInfo schema."""
+
     user_id: str
     username: Optional[str]
     color: Optional[str]
@@ -44,8 +50,9 @@ class UserUpdateInfo(BaseModel):
     password: Optional[str]
 
 
-# experiences
 class NewExperience(BaseModel):
+    """NewExperience schema."""
+
     title: str
     description: str
     location: str
@@ -55,6 +62,8 @@ class NewExperience(BaseModel):
 
 
 class ExperienceResponse(NewExperience):
+    """ExperienceResponse schema."""
+
     user_id: UUID
     experience_id: UUID
     created_at: datetime
@@ -67,6 +76,8 @@ class ExperienceResponse(NewExperience):
 
 
 class ExperienceUpdateInfo(BaseModel):
+    """ExperienceUpdateInfo schema."""
+
     experience_id: str
     title: Optional[str]
     description: Optional[str]
@@ -77,6 +88,8 @@ class ExperienceUpdateInfo(BaseModel):
 
 
 class ExperienceFilters(BaseModel):
+    """ExperienceFilters schema."""
+
     experience_id: Optional[str]
     user_id: Optional[str]
     title: Optional[str]

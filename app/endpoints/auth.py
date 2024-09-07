@@ -1,4 +1,5 @@
-# libraries
+"""Auth endpoints."""
+
 from datetime import timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -6,8 +7,6 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from app import database, oauth2
 from app.functions import utils
-
-# local libraries
 from app.functions.crud import users
 
 auth_router = APIRouter()
