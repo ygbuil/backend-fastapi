@@ -15,7 +15,8 @@ auth_router = APIRouter()
 
 @auth_router.post("/token")
 def login(
-    form_data: OAuth2PasswordRequestForm = Depends(), db_session=Depends(database.get_db_session),
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db_session=Depends(database.get_db_session),
 ):
     user = users.get_user_by_name(db_session=db_session, username=form_data.username)
 

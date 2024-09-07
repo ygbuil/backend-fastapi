@@ -24,7 +24,8 @@ def create_experience(
         experience_to_create=experience_to_create,
     )
     created_experience = utils.add_lifetime_to_experience(
-        experience=created_experience, created_at=created_experience.created_at,
+        experience=created_experience,
+        created_at=created_experience.created_at,
     )
 
     return created_experience
@@ -33,14 +34,16 @@ def create_experience(
 @experiences_router.get("/{experience_id}", response_model=ExperienceResponse)
 def get_experience(experience_id: str, db_session=Depends(database.get_db_session)):
     experience = experiences.get_experience_by_id(
-        db_session=db_session, experience_id=experience_id,
+        db_session=db_session,
+        experience_id=experience_id,
     )
 
     if experience is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Experience not found")
 
     experience = utils.add_lifetime_to_experience(
-        experience=experience, created_at=experience.created_at,
+        experience=experience,
+        created_at=experience.created_at,
     )
 
     return experience
@@ -75,7 +78,8 @@ def get_experience_by_filter(
 
     for idx, experience in enumerate(experiences_filtered):
         experience = utils.add_lifetime_to_experience(
-            experience=experience, created_at=experience.created_at,
+            experience=experience,
+            created_at=experience.created_at,
         )
         experiences_filtered[idx] = experience
 
@@ -89,7 +93,8 @@ def update_experience(
     db_session=Depends(database.get_db_session),
 ):
     experience = experiences.get_experience_by_id(
-        db_session=db_session, experience_id=experience_update_info.experience_id,
+        db_session=db_session,
+        experience_id=experience_update_info.experience_id,
     )
 
     if experience is None:
@@ -102,11 +107,13 @@ def update_experience(
         )
 
     updated_experience = experiences.update_experience(
-        db_session=db_session, experience_update_info=experience_update_info,
+        db_session=db_session,
+        experience_update_info=experience_update_info,
     )
 
     updated_experience = utils.add_lifetime_to_experience(
-        experience=updated_experience, created_at=updated_experience.created_at,
+        experience=updated_experience,
+        created_at=updated_experience.created_at,
     )
 
     return updated_experience
@@ -119,7 +126,8 @@ def delete_experience(
     db_session=Depends(database.get_db_session),
 ):
     experience = experiences.get_experience_by_id(
-        db_session=db_session, experience_id=experience_id,
+        db_session=db_session,
+        experience_id=experience_id,
     )
 
     if experience is None:
@@ -132,11 +140,13 @@ def delete_experience(
         )
 
     deleted_experience = experiences.delete_experience(
-        db_session=db_session, experience_id=experience_id,
+        db_session=db_session,
+        experience_id=experience_id,
     )
 
     deleted_experience = utils.add_lifetime_to_experience(
-        experience=deleted_experience, created_at=deleted_experience.created_at,
+        experience=deleted_experience,
+        created_at=deleted_experience.created_at,
     )
 
     return deleted_experience

@@ -31,7 +31,8 @@ def test_update_user(client, test_user_1, test_token_1):
     client.headers = {**client.headers, "Authorization": f"Bearer {test_token_1}"}
 
     response = client.put(
-        f"/users/{test_user_1['user_id']}", json={"user_id": test_user_1["user_id"], "color": "red"},
+        f"/users/{test_user_1['user_id']}",
+        json={"user_id": test_user_1["user_id"], "color": "red"},
     )
 
     assert response.json()["color"] == "red"
@@ -42,11 +43,13 @@ def test_update_user_unauthorized(client, test_user_1, test_token_2):
     client.headers = {**client.headers, "Authorization": f"Bearer {test_token_2}"}
 
     response = client.put(
-        f"/users/{test_user_1['user_id']}", json={"user_id": test_user_1["user_id"], "color": "red"},
+        f"/users/{test_user_1['user_id']}",
+        json={"user_id": test_user_1["user_id"], "color": "red"},
     )
 
     response = client.put(
-        f"/users/{test_user_1['user_id']}", json={"user_id": test_user_1["user_id"], "color": "red"},
+        f"/users/{test_user_1['user_id']}",
+        json={"user_id": test_user_1["user_id"], "color": "red"},
     )
 
     assert response.status_code == 403
