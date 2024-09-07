@@ -1,8 +1,9 @@
 # libraries
 from datetime import datetime
-from uuid import UUID
-from pydantic import BaseModel
 from typing import Optional
+from uuid import UUID
+
+from pydantic import BaseModel
 
 
 # users
@@ -14,9 +15,11 @@ class NewUser(BaseModel):
     lon: float
     password: str
 
+
 class User(NewUser):
     user_id: UUID
     created_at: datetime
+
 
 class UserResponse(BaseModel):
     user_id: UUID
@@ -28,7 +31,8 @@ class UserResponse(BaseModel):
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
 
 class UserUpdateInfo(BaseModel):
     user_id: str
@@ -49,6 +53,7 @@ class NewExperience(BaseModel):
     lon: float
     rating: int
 
+
 class ExperienceResponse(NewExperience):
     user_id: UUID
     experience_id: UUID
@@ -58,16 +63,18 @@ class ExperienceResponse(NewExperience):
     owner: UserResponse
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
 
 class ExperienceUpdateInfo(BaseModel):
     experience_id: str
     title: Optional[str]
     description: Optional[str]
     location: Optional[str]
-    lat: Optional[str]
-    lon: Optional[str]
-    rating: Optional[str]
+    lat: Optional[float]
+    lon: Optional[float]
+    rating: Optional[int]
+
 
 class ExperienceFilters(BaseModel):
     experience_id: Optional[str]
