@@ -6,17 +6,17 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
 from app import database, oauth2
-from app.functions import utils
-from app.functions.crud import users
+from app.functions import users, utils
 
 auth_router = APIRouter()
 
 
 @auth_router.post("/token")
 def login(
-    form_data: OAuth2PasswordRequestForm = Depends(),
-    db_session=Depends(database.get_db_session),
-):
+    form_data: OAuth2PasswordRequestForm = Depends(),  # noqa: B008
+    db_session: Depends = Depends(database.get_db_session),  # noqa: B008
+) -> dict:
+    """Get authentication bearer token."""
     user = users.get_user_by_name(db_session=db_session, username=form_data.username)
 
     if user is None:

@@ -3,7 +3,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from app import database, oauth2
-from app.functions.crud import users
+from app.functions import users
 from app.schemas import NewUser, UserResponse, UserUpdateInfo
 
 users_router = APIRouter(prefix="/users")
@@ -12,8 +12,9 @@ users_router = APIRouter(prefix="/users")
 @users_router.post("", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def create_user(
     user_to_create: NewUser,
-    db_session: Depends = Depends(database.get_db_session),
+    db_session: Depends = Depends(database.get_db_session),  # noqa: B008
 ) -> dict:
+    """Create user endpoint."""
     user = users.get_user_by_name(db_session=db_session, username=user_to_create.username)
 
     if user is not None:
@@ -23,7 +24,8 @@ def create_user(
 
 
 @users_router.get("/{user_id}", response_model=UserResponse)
-def get_user(user_id: str, db_session: Depends = Depends(database.get_db_session)) -> dict:
+def get_user(user_id: str, db_session: Depends = Depends(database.get_db_session)) -> dict:  # noqa: B008
+    """Get user endpoint."""
     user = users.get_user_by_id(db_session=db_session, user_id=user_id)
 
     if user is None:
@@ -39,10 +41,11 @@ def update_user(
     verified_user: Depends = Depends(oauth2.get_verified_user),  # noqa: B008
     db_session: Depends = Depends(database.get_db_session),  # noqa: B008
 ) -> dict:
+    """Update user endpoint."""
     try:
         user_to_update = users.get_user_by_id(db_session=db_session, user_id=user_id)
-    except Exception:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Bad request")
+    except Exception as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Bad request") from exc
 
     if user_to_update is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
@@ -62,6 +65,7 @@ def delete_user(
     verified_user: Depends = Depends(oauth2.get_verified_user),  # noqa: B008
     db_session: Depends = Depends(database.get_db_session),  # noqa: B008
 ) -> dict:
+    """Delete user endpoint."""
     user_to_delete = users.get_user_by_id(db_session=db_session, user_id=user_id)
 
     if user_to_delete is None:

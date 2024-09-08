@@ -12,6 +12,8 @@ from app.database import Base
 
 
 class UsersTableItem(Base):
+    """Data model for table to store user data."""
+
     __tablename__ = "users"
 
     user_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -25,6 +27,8 @@ class UsersTableItem(Base):
 
 
 class ExperiencesTableItem(Base):
+    """Data model for table to store user experiences."""
+
     __tablename__ = "experiences"
 
     experience_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)

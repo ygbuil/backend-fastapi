@@ -1,40 +1,42 @@
+"""Utils functions."""
+
 import datetime
 
 from passlib.context import CryptContext
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+from app.models import ExperiencesTableItem
+
+PWD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-def hash(password: str):
-    return pwd_context.hash(password)
+def hash_password(password: str) -> str:
+    """Hash password."""
+    return PWD_CONTEXT.hash(password)
 
 
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Verify plain text password matches hashed password."""
+    return PWD_CONTEXT.verify(plain_password, hashed_password)
 
 
-def add_lifetime_to_experience(experience, created_at: datetime):
-    time_dif = datetime.datetime.today() - created_at.replace(tzinfo=None)
-    time_dif = time_dif.days
+def add_lifetime_to_experience(experience: ExperiencesTableItem, created_at: datetime) -> str:
+    """Calculate the time that happened since a experience was created."""
+    days_dif = (datetime.datetime.now(tz=datetime.timezone.utc) - created_at).days
 
-    year = int(time_dif / 365)
-    week = int((time_dif % 365) / 7)
-    days = int((time_dif % 365) % 7)
+    years = days_dif // 365
+    weeks = int((days_dif % 365) / 7)
+    days = int((days_dif % 365) % 7)
 
     lifetime = ""
 
-    if year != 0:
-        lifetime = lifetime + str(year) + "y, "
-    if week != 0:
-        lifetime = lifetime + str(week) + "w, "
+    if years != 0:
+        lifetime += str(years) + "y, "
+    if weeks != 0:
+        lifetime += str(weeks) + "w, "
     if days != 0:
-        lifetime = lifetime + str(days) + "d, "
+        lifetime += str(days) + "d, "
 
-    if lifetime == "":
-        lifetime = "today"
-    else:
-        lifetime = lifetime[:-2] + " ago"
-
+    lifetime = "today" if lifetime == "" else lifetime[:-2] + " ago"
     experience.lifetime = lifetime
 
     return experience
