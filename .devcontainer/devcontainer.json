@@ -1,0 +1,22 @@
+{
+    "name": "Python 3.11 & Poetry & Oh My Zsh",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "postCreateCommand": "/bin/zsh -c 'poetry install && poetry run pre-commit install --hook-type pre-commit --hook-type pre-push'",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.shell.linux": "/bin/zsh"
+            },
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "ms-azuretools.vscode-docker",
+                "njpwerner.autodocstring",
+                "ms-toolsai.jupyter",
+                "ms-toolsai.datawrangler"
+            ]
+        }
+    }
+}

@@ -1,12 +1,15 @@
-# libraries
+"""Schemas for requests and responses."""
+
 from datetime import datetime
-from uuid import UUID
-from pydantic import BaseModel
 from typing import Optional
+from uuid import UUID
+
+from pydantic import BaseModel
 
 
-# users
 class NewUser(BaseModel):
+    """NewExperience schema."""
+
     username: str
     color: str
     location: str
@@ -14,11 +17,17 @@ class NewUser(BaseModel):
     lon: float
     password: str
 
+
 class User(NewUser):
+    """NewExperience schema."""
+
     user_id: UUID
     created_at: datetime
 
+
 class UserResponse(BaseModel):
+    """NewExperience data model."""
+
     user_id: UUID
     username: str
     color: str
@@ -28,20 +37,26 @@ class UserResponse(BaseModel):
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        """Config."""
+
+        from_attributes = True
+
 
 class UserUpdateInfo(BaseModel):
+    """UserUpdateInfo schema."""
+
     user_id: str
     username: Optional[str]
     color: Optional[str]
     location: Optional[str]
-    lat: Optional[str]
-    lon: Optional[str]
+    lat: Optional[float]
+    lon: Optional[float]
     password: Optional[str]
 
 
-# experiences
 class NewExperience(BaseModel):
+    """NewExperience schema."""
+
     title: str
     description: str
     location: str
@@ -49,7 +64,10 @@ class NewExperience(BaseModel):
     lon: float
     rating: int
 
+
 class ExperienceResponse(NewExperience):
+    """ExperienceResponse schema."""
+
     user_id: UUID
     experience_id: UUID
     created_at: datetime
@@ -58,18 +76,26 @@ class ExperienceResponse(NewExperience):
     owner: UserResponse
 
     class Config:
-        orm_mode = True
+        """Config."""
+
+        from_attributes = True
+
 
 class ExperienceUpdateInfo(BaseModel):
+    """ExperienceUpdateInfo schema."""
+
     experience_id: str
     title: Optional[str]
     description: Optional[str]
     location: Optional[str]
-    lat: Optional[str]
-    lon: Optional[str]
-    rating: Optional[str]
+    lat: Optional[float]
+    lon: Optional[float]
+    rating: Optional[int]
+
 
 class ExperienceFilters(BaseModel):
+    """ExperienceFilters schema."""
+
     experience_id: Optional[str]
     user_id: Optional[str]
     title: Optional[str]

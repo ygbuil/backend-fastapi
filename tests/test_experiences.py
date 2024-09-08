@@ -1,69 +1,92 @@
-def test_create_experience(client, test_token_1):
-    client.headers = {
-        **client.headers, 'Authorization': f'Bearer {test_token_1}'
-    }
+"""Testing for experiences endpoints."""
 
-    response = client.post('/experiences', json={
-        'title': 'Beach', 'description': 'A sunny day',
-        'location': 'Costa Brava', 'lat': 12.58658855, 'lon': 54.39338383,
-        'rating': 5
-    })
+from fastapi import status
+from fastapi.testclient import TestClient
 
-    assert response.status_code == 201
+_NEW_RATING = 4
 
 
-def test_update_experience(client, test_token_1, test_experience_1):
-    client.headers = {
-        **client.headers, 'Authorization': f'Bearer {test_token_1}'
-    }
+def test_create_experience(client: TestClient, test_token_1: str) -> None:
+    """Test create experience."""
+    client.headers = {**client.headers, "Authorization": f"Bearer {test_token_1}"}
 
-    response = client.put(
-        f"/experiences/{test_experience_1['experience_id']}", json={
-            'experience_id': test_experience_1['experience_id'], 'rating': 4
-        }
+    response = client.post(
+        "/experiences",
+        json={
+            "title": "Beach",
+            "description": "A sunny day",
+            "location": "Costa Brava",
+            "lat": 12.58658855,
+            "lon": 54.39338383,
+            "rating": 5,
+        },
     )
 
-    assert response.json()['rating'] == 4
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_201_CREATED
+
+
+def test_update_experience(client: TestClient, test_experience_1: dict, test_token_1: str) -> None:
+    """Test update experience."""
+    client.headers = {**client.headers, "Authorization": f"Bearer {test_token_1}"}
+
+    response = client.put(
+        f"/experiences/{test_experience_1['experience_id']}",
+        json={
+            "experience_id": test_experience_1["experience_id"],
+            "title": test_experience_1["title"],
+            "description": test_experience_1["description"],
+            "location": test_experience_1["location"],
+            "lat": test_experience_1["lat"],
+            "lon": test_experience_1["lon"],
+            "rating": _NEW_RATING,
+        },
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["rating"] == _NEW_RATING
 
 
 def test_update_experience_unauthorized(
-    client, test_token_2, test_experience_1
-):
-    client.headers = {
-        **client.headers, 'Authorization': f'Bearer {test_token_2}'
-    }
+    client: TestClient,
+    test_experience_1: dict,
+    test_token_2: str,
+) -> None:
+    """Test update experience with unauthorized user."""
+    client.headers = {**client.headers, "Authorization": f"Bearer {test_token_2}"}
 
     response = client.put(
-        f"/experiences/{test_experience_1['experience_id']}", json={
-            'experience_id': test_experience_1['experience_id'], 'rating': 4
-        }
+        f"/experiences/{test_experience_1['experience_id']}",
+        json={
+            "experience_id": test_experience_1["experience_id"],
+            "title": test_experience_1["title"],
+            "description": test_experience_1["description"],
+            "location": test_experience_1["location"],
+            "lat": test_experience_1["lat"],
+            "lon": test_experience_1["lon"],
+            "rating": _NEW_RATING,
+        },
     )
 
-    assert response.status_code == 403
+    assert response.status_code == status.HTTP_403_FORBIDDEN
 
 
-def test_delete_experience(client, test_token_1, test_experience_1):
-    client.headers = {
-        **client.headers, 'Authorization': f'Bearer {test_token_1}'
-    }
+def test_delete_experience(client: TestClient, test_experience_1: dict, test_token_1: str) -> None:
+    """Test delete experience."""
+    client.headers = {**client.headers, "Authorization": f"Bearer {test_token_1}"}
 
-    response = client.delete(
-        f"/experiences/{test_experience_1['experience_id']}"
-    )
+    response = client.delete(f"/experiences/{test_experience_1['experience_id']}")
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
 
 
 def test_delete_experience_unauthorized(
-    client, test_token_2, test_experience_1
-):
-    client.headers = {
-        **client.headers, 'Authorization': f'Bearer {test_token_2}'
-    }
+    client: TestClient,
+    test_experience_1: dict,
+    test_token_2: str,
+) -> None:
+    """Test delete experience with unauthorized user."""
+    client.headers = {**client.headers, "Authorization": f"Bearer {test_token_2}"}
 
-    response = client.delete(
-        f"/experiences/{test_experience_1['experience_id']}"
-    )
+    response = client.delete(f"/experiences/{test_experience_1['experience_id']}")
 
-    assert response.status_code == 403
+    assert response.status_code == status.HTTP_403_FORBIDDEN

@@ -1,44 +1,45 @@
-# libraries
-from datetime import datetime
+"""Authentication module."""
+
+import datetime
 from uuid import UUID
-from jose import jwt, JWTError
+
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
+from jose import JWTError, jwt
 
-# local libraries
-from app.functions.crud import users
-from app.database import get_db_session
 from app.config import settings
+from app.database import get_db_session
+from app.functions import users
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
-
-
-def create_token(username: str, user_id: UUID, color: str, expiration_time):
-    expire_date = datetime.utcnow() + expiration_time
-    encoded_token = jwt.encode(
+def create_token(username: str, user_id: UUID, color: str, expiration_time: int) -> str:
+    """Create token for the user."""
+    expire_date = datetime.datetime.now(tz=datetime.timezone.utc) + expiration_time
+    return jwt.encode(
         {
-            'username': username, 'user_id': str(user_id), 'color': str(color),
-            'exp': expire_date,
+            "username": username,
+            "user_id": str(user_id),
+            "color": str(color),
+            "exp": expire_date,
         },
-        key=settings.secret_key, algorithm='HS256',
+        key=settings.secret_key,
+        algorithm="HS256",
     )
-
-    return encoded_token
 
 
 def get_verified_user(
-    token: str = Depends(oauth2_scheme), db_session=Depends(get_db_session)
-):
+    token: str = Depends(oauth2_scheme),
+    db_session: Depends = Depends(get_db_session),  # noqa: B008
+) -> dict:
+    """Get the authorised user for the received token."""
     try:
-        payload = jwt.decode(token, settings.secret_key, algorithms='HS256')
-        verified_user = users.get_user_by_id(
-            db_session=db_session, user_id=payload.get('user_id')
-        )
+        payload = jwt.decode(token, settings.secret_key, algorithms="HS256")
+        return users.get_user_by_id(db_session=db_session, user_id=payload.get("user_id"))
 
-        return verified_user
-
-    except JWTError:
+    except JWTError as exc:
         raise HTTPException(
-            status.HTTP_401_UNAUTHORIZED, detail='Could not validate token'
-        )
+            status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate token",
+        ) from exc

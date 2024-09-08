@@ -1,0 +1,20 @@
+repos:
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.4.6
+    hooks:
+      - id: ruff-format
+        name: Ruff formater
+        stages: [commit]
+      - id: ruff
+        name: Ruff linter
+        args: [ --fix ]
+        stages: [commit]
+
+  - repo: local
+    hooks:
+    - id: tests
+      name: Tests
+      entry: pytest
+      pass_filenames: false
+      language: system
+      stages: [push] # for it to work, run: pre-commit install --hook-type pre-commit --hook-type pre-push

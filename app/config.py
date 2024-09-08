@@ -1,9 +1,13 @@
-# libraries
-import os
-from pydantic import BaseSettings
+"""Database config."""
+
+from pathlib import Path
+
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
+    """Database settings."""
+
     db_user: str
     db_password: str
     db_host: str
@@ -12,7 +16,9 @@ class Settings(BaseSettings):
     secret_key: str
 
     class Config:
-        env_file = os.path.join(os.getcwd(), '.env')
+        """Config."""
+
+        env_file = Path.cwd() / Path(".env")
 
 
 settings = Settings()

@@ -1,15 +1,14 @@
-# libraries
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
+"""Database module."""
 
-# local libraries
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import Session, sessionmaker
+
 from app.config import settings
 
-
 SQLALCHEMY_DATABASE_URL = (
-    f'postgresql://{settings.db_user}:{settings.db_password}'
-    f'@{settings.db_host}:{settings.db_port}/{settings.db_name}'
+    f"postgresql://{settings.db_user}:{settings.db_password}"
+    f"@{settings.db_host}:{settings.db_port}/{settings.db_name}"
 )
 
 # create engine to interact with DB
@@ -24,8 +23,9 @@ Base = declarative_base()
 # create DB
 Base.metadata.create_all(bind=engine)
 
-# create a session with SessionLocal
+
 def get_db_session() -> Session:
+    """Create a session with SessionLocal."""
     db_session = SessionLocal()
     try:
         yield db_session
