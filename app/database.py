@@ -24,8 +24,8 @@ Base = declarative_base()
 Base.metadata.create_all(bind=engine)
 
 
-# create a session with SessionLocal
 def get_db_session() -> Session:
+    """Create a session with SessionLocal."""
     db_session = SessionLocal()
     try:
         yield db_session

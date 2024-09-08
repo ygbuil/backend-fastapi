@@ -1,6 +1,6 @@
 """Database config."""
 
-import os
+from pathlib import Path
 
 from pydantic_settings import BaseSettings
 
@@ -16,7 +16,9 @@ class Settings(BaseSettings):
     secret_key: str
 
     class Config:
-        env_file = os.path.join(os.getcwd(), ".env")
+        """Config."""
+
+        env_file = Path.cwd() / Path(".env")
 
 
 settings = Settings()
