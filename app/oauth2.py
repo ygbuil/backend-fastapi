@@ -1,4 +1,6 @@
-from datetime import datetime
+"""Authentication module."""
+
+import datetime
 from uuid import UUID
 
 from fastapi import Depends, HTTPException, status
@@ -14,7 +16,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 def create_token(username: str, user_id: UUID, color: str, expiration_time: int) -> str:
     """Create token for the user."""
-    expire_date = datetime.utcnow() + expiration_time
+    expire_date = datetime.datetime.now(tz=datetime.timezone.utc) + expiration_time
     return jwt.encode(
         {
             "username": username,
@@ -36,5 +38,8 @@ def get_verified_user(
         payload = jwt.decode(token, settings.secret_key, algorithms="HS256")
         return users.get_user_by_id(db_session=db_session, user_id=payload.get("user_id"))
 
-    except JWTError:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, detail="Could not validate token")
+    except JWTError as exc:
+        raise HTTPException(
+            status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate token",
+        ) from exc

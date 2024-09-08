@@ -1,3 +1,5 @@
+"""Schemas for requests and responses."""
+
 from datetime import datetime
 from typing import Optional
 from uuid import UUID
@@ -35,6 +37,8 @@ class UserResponse(BaseModel):
     created_at: datetime
 
     class Config:
+        """Config."""
+
         from_attributes = True
 
 
@@ -72,6 +76,8 @@ class ExperienceResponse(NewExperience):
     owner: UserResponse
 
     class Config:
+        """Config."""
+
         from_attributes = True
 
 
