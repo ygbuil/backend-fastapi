@@ -6,8 +6,8 @@ import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
 
+from app.database import Base
 from app.endpoint_functions import auth
-from app.models import Base
 from tests.database import app, engine
 
 
