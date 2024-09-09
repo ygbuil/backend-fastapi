@@ -6,8 +6,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 
-from app import database, oauth2
-from app.endpoint_functions import users
+from app import database
+from app.endpoint_functions import auth, users
 
 PWD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -29,7 +29,7 @@ def login(
     if not _verify_password(plain_password=form_data.password, hashed_password=user.password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect password")
 
-    access_token = oauth2.create_token(
+    access_token = auth.create_token(
         username=user.username,
         user_id=user.user_id,
         color=user.color,

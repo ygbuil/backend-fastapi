@@ -2,8 +2,8 @@
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app import database, oauth2
-from app.endpoint_functions import users
+from app import database
+from app.endpoint_functions import auth, users
 from app.schemas import NewUser, UserResponse, UserUpdateInfo
 
 users_router = APIRouter(prefix="/users")
@@ -38,7 +38,7 @@ def get_user(user_id: str, db_session: Depends = Depends(database.get_db_session
 def update_user(
     user_id: str,
     user_update_info: UserUpdateInfo,
-    verified_user: Depends = Depends(oauth2.get_verified_user),  # noqa: B008
+    verified_user: Depends = Depends(auth.get_verified_user),  # noqa: B008
     db_session: Depends = Depends(database.get_db_session),  # noqa: B008
 ) -> dict:
     """Update user endpoint."""
@@ -62,7 +62,7 @@ def update_user(
 @users_router.delete("/{user_id}", response_model=UserResponse)
 def delete_user(
     user_id: str,
-    verified_user: Depends = Depends(oauth2.get_verified_user),  # noqa: B008
+    verified_user: Depends = Depends(auth.get_verified_user),  # noqa: B008
     db_session: Depends = Depends(database.get_db_session),  # noqa: B008
 ) -> dict:
     """Delete user endpoint."""

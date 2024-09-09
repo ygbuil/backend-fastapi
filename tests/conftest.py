@@ -6,7 +6,7 @@ import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
 
-from app import oauth2
+from app.endpoint_functions import auth
 from app.models import Base
 from tests.database import app, engine
 
@@ -69,7 +69,7 @@ def test_user_2(client: TestClient) -> dict:
 @pytest.fixture()
 def test_token_1(test_user_1: dict) -> str:
     """Token for testing user number 1."""
-    return oauth2.create_token(
+    return auth.create_token(
         username=test_user_1["username"],
         user_id=test_user_1["user_id"],
         color=test_user_1["color"],
@@ -80,7 +80,7 @@ def test_token_1(test_user_1: dict) -> str:
 @pytest.fixture()
 def test_token_2(test_user_2: dict) -> str:
     """Token for testing user number 2."""
-    return oauth2.create_token(
+    return auth.create_token(
         username=test_user_2["username"],
         user_id=test_user_2["user_id"],
         color=test_user_2["color"],

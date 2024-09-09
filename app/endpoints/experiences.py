@@ -5,8 +5,8 @@ from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app import database, oauth2
-from app.endpoint_functions import experiences
+from app import database
+from app.endpoint_functions import auth, experiences
 from app.models import ExperiencesTableItem
 from app.schemas import ExperienceResponse, ExperienceUpdateInfo, NewExperience
 
@@ -16,7 +16,7 @@ experiences_router = APIRouter(prefix="/experiences")
 @experiences_router.post("", response_model=ExperienceResponse, status_code=status.HTTP_201_CREATED)
 def create_experience(
     experience_to_create: NewExperience,
-    verified_user: Depends = Depends(oauth2.get_verified_user),  # noqa: B008
+    verified_user: Depends = Depends(auth.get_verified_user),  # noqa: B008
     db_session: Depends = Depends(database.get_db_session),  # noqa: B008
 ) -> ExperiencesTableItem:
     """Create new experience."""
@@ -92,7 +92,7 @@ def get_experience_by_filter(
 @experiences_router.put("/{experience_id}", response_model=ExperienceResponse)
 def update_experience(
     experience_update_info: ExperienceUpdateInfo,
-    verified_user: Depends = Depends(oauth2.get_verified_user),  # noqa: B008
+    verified_user: Depends = Depends(auth.get_verified_user),  # noqa: B008
     db_session: Depends = Depends(database.get_db_session),  # noqa: B008
 ) -> ExperiencesTableItem:
     """Update experience content."""
@@ -124,7 +124,7 @@ def update_experience(
 @experiences_router.delete("/{experience_id}", response_model=ExperienceResponse)
 def delete_experience(
     experience_id: str,
-    verified_user: Depends = Depends(oauth2.get_verified_user),  # noqa: B008
+    verified_user: Depends = Depends(auth.get_verified_user),  # noqa: B008
     db_session: Depends = Depends(database.get_db_session),  # noqa: B008
 ) -> ExperiencesTableItem:
     """Delete experience by id."""
