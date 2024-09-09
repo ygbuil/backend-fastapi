@@ -58,8 +58,6 @@ def test_update_user(client: TestClient, test_user_1: dict, test_token_1: str) -
 
 def test_update_user_unauthorized(client: TestClient, test_user_1: dict, test_token_2: str) -> None:
     """Test update user with unauthorized user."""
-    client.headers = {**client.headers, "Authorization": f"Bearer {test_token_2}"}
-
     response = client.put(
         f"/users/{test_user_1['user_id']}",
         json={
@@ -71,6 +69,7 @@ def test_update_user_unauthorized(client: TestClient, test_user_1: dict, test_to
             "lon": test_user_1["lon"],
             "password": test_user_1["password"],
         },
+        headers={"Authorization": f"Bearer {test_token_2}"},
     )
 
     assert response.status_code == status.HTTP_403_FORBIDDEN
@@ -87,8 +86,9 @@ def test_delete_user(client: TestClient, test_user_1: dict, test_token_1: str) -
 
 def test_delete_user_unauthorized(client: TestClient, test_user_1: dict, test_token_2: str) -> None:
     """Test delete user with unauthorized user."""
-    client.headers = {**client.headers, "Authorization": f"Bearer {test_token_2}"}
-
-    response = client.delete(f"/users/{test_user_1['user_id']}")
+    response = client.delete(
+        f"/users/{test_user_1['user_id']}",
+        headers={"Authorization": f"Bearer {test_token_2}"},
+    )
 
     assert response.status_code == status.HTTP_403_FORBIDDEN

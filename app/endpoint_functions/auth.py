@@ -9,7 +9,7 @@ from jose import JWTError, jwt
 
 from app.config import settings
 from app.database import get_db_session
-from app.functions import users
+from app.endpoint_functions import users
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 

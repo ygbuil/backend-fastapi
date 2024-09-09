@@ -1,15 +1,16 @@
 """Functions that deal with users."""
 
+from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
-from app.functions import utils
-from app.models import UsersTableItem
-from app.schemas import NewUser, UserUpdateInfo
+from app.data import NewUser, UsersTableItem, UserUpdateInfo
+
+PWD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def create_user(db_session: Session, user_to_create: NewUser) -> UsersTableItem:
     """Create a user and write it to database."""
-    user_to_create.password = utils.hash_password(user_to_create.password)
+    user_to_create.password = _hash_password(user_to_create.password)
     new_user = UsersTableItem(**user_to_create.dict())
 
     db_session.add(new_user)
@@ -51,3 +52,8 @@ def delete_user(db_session: Session, user_id: str) -> UsersTableItem:
     db_session.commit()
 
     return user
+
+
+def _hash_password(password: str) -> str:
+    """Hash password."""
+    return PWD_CONTEXT.hash(password)
