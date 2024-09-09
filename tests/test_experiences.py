@@ -52,8 +52,6 @@ def test_update_experience_unauthorized(
     test_token_2: str,
 ) -> None:
     """Test update experience with unauthorized user."""
-    client.headers = {**client.headers, "Authorization": f"Bearer {test_token_2}"}
-
     response = client.put(
         f"/experiences/{test_experience_1['experience_id']}",
         json={
@@ -65,6 +63,7 @@ def test_update_experience_unauthorized(
             "lon": test_experience_1["lon"],
             "rating": _NEW_RATING,
         },
+        headers={"Authorization": f"Bearer {test_token_2}"},
     )
 
     assert response.status_code == status.HTTP_403_FORBIDDEN
@@ -85,8 +84,9 @@ def test_delete_experience_unauthorized(
     test_token_2: str,
 ) -> None:
     """Test delete experience with unauthorized user."""
-    client.headers = {**client.headers, "Authorization": f"Bearer {test_token_2}"}
-
-    response = client.delete(f"/experiences/{test_experience_1['experience_id']}")
+    response = client.delete(
+        f"/experiences/{test_experience_1['experience_id']}",
+        headers={"Authorization": f"Bearer {test_token_2}"},
+    )
 
     assert response.status_code == status.HTTP_403_FORBIDDEN
