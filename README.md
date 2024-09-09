@@ -15,13 +15,13 @@ It features all common operations of a social media CRUD app:
 Here are some snippeds of how the app looks like:
 
 * Feed:
-![alt_text](https://github.com/ygbuil/Backend-FastAPI/blob/master/images/feed.png)
+![Alt text](images/feed.png)
 
 * Log in page:
-![alt_text](https://github.com/ygbuil/Backend-FastAPI/blob/master/images/log_in.png)
+![![Alt text]](images/log_in.png)
 
 * Post experience page:
-![alt_text](https://github.com/ygbuil/Backend-FastAPI/blob/master/images/post_experience.png)
+![![Alt text]](images/post_experience.png)
 
 ## How to use it
 
