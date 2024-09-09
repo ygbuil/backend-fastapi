@@ -1,11 +1,12 @@
 """Experiences endpoints."""
 
+import datetime
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from app import database, oauth2
-from app.functions import experiences, utils
+from app.endpoint_functions import experiences
 from app.models import ExperiencesTableItem
 from app.schemas import ExperienceResponse, ExperienceUpdateInfo, NewExperience
 
@@ -24,7 +25,7 @@ def create_experience(
         verified_user=verified_user,
         experience_to_create=experience_to_create,
     )
-    return utils.add_lifetime_to_experience(
+    return _add_lifetime_to_experience(
         experience=created_experience,
         created_at=created_experience.created_at,
     )
@@ -44,7 +45,7 @@ def get_experience(
     if experience is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Experience not found")
 
-    return utils.add_lifetime_to_experience(
+    return _add_lifetime_to_experience(
         experience=experience,
         created_at=experience.created_at,
     )
@@ -79,7 +80,7 @@ def get_experience_by_filter(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Experiences not found")
 
     for idx, experience in enumerate(experiences_filtered):
-        experience = utils.add_lifetime_to_experience(
+        experience = _add_lifetime_to_experience(
             experience=experience,
             created_at=experience.created_at,
         )
@@ -114,7 +115,7 @@ def update_experience(
         experience_update_info=experience_update_info,
     )
 
-    return utils.add_lifetime_to_experience(
+    return _add_lifetime_to_experience(
         experience=updated_experience,
         created_at=updated_experience.created_at,
     )
@@ -146,7 +147,30 @@ def delete_experience(
         experience_id=experience_id,
     )
 
-    return utils.add_lifetime_to_experience(
+    return _add_lifetime_to_experience(
         experience=deleted_experience,
         created_at=deleted_experience.created_at,
     )
+
+
+def _add_lifetime_to_experience(experience: ExperiencesTableItem, created_at: datetime) -> str:
+    """Calculate the time that happened since a experience was created."""
+    days_dif = (datetime.datetime.now(tz=datetime.timezone.utc) - created_at).days
+
+    years = days_dif // 365
+    weeks = int((days_dif % 365) / 7)
+    days = int((days_dif % 365) % 7)
+
+    lifetime = ""
+
+    if years != 0:
+        lifetime += str(years) + "y, "
+    if weeks != 0:
+        lifetime += str(weeks) + "w, "
+    if days != 0:
+        lifetime += str(days) + "d, "
+
+    lifetime = "today" if lifetime == "" else lifetime[:-2] + " ago"
+    experience.lifetime = lifetime
+
+    return experience

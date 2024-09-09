@@ -3,7 +3,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from app import database, oauth2
-from app.functions import users
+from app.endpoint_functions import users
 from app.schemas import NewUser, UserResponse, UserUpdateInfo
 
 users_router = APIRouter(prefix="/users")

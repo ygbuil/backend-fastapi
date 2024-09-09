@@ -4,9 +4,13 @@ from datetime import timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
+from passlib.context import CryptContext
 
 from app import database, oauth2
-from app.functions import users, utils
+from app.endpoint_functions import users
+
+PWD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 
 auth_router = APIRouter()
 
@@ -22,7 +26,7 @@ def login(
     if user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-    if not utils.verify_password(plain_password=form_data.password, hashed_password=user.password):
+    if not _verify_password(plain_password=form_data.password, hashed_password=user.password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect password")
 
     access_token = oauth2.create_token(
@@ -33,3 +37,8 @@ def login(
     )
 
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+def _verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Verify plain text password matches hashed password."""
+    return PWD_CONTEXT.verify(plain_password, hashed_password)
