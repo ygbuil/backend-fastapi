@@ -1,6 +1,6 @@
 """__init__.py for data package."""
 
-from .models import ExperiencesTableItem, UsersTableItem
+from .models import Base, ExperiencesTableItem, UsersTableItem
 from .schemas import (
     ExperienceFilters,
     ExperienceResponse,
@@ -23,4 +23,5 @@ __all__ = [
     "ExperienceResponse",
     "ExperienceUpdateInfo",
     "ExperienceFilters",
+    "Base",
 ]
