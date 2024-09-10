@@ -3,9 +3,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.endpoints.auth import auth_router
-from app.endpoints.experiences import experiences_router
-from app.endpoints.users import users_router
+from app.endpoints import auth_router, experiences_router, users_router
 
 app = FastAPI()
 routers = [auth_router, users_router, experiences_router]
