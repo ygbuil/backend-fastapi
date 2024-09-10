@@ -5,9 +5,8 @@ from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app import database
+from app import database, endpoint_functions
 from app.data import ExperienceResponse, ExperiencesTableItem, ExperienceUpdateInfo, NewExperience
-from app.endpoint_functions import auth, experiences
 
 experiences_router = APIRouter(prefix="/experiences")
 
@@ -15,11 +14,11 @@ experiences_router = APIRouter(prefix="/experiences")
 @experiences_router.post("", response_model=ExperienceResponse, status_code=status.HTTP_201_CREATED)
 def create_experience(
     experience_to_create: NewExperience,
-    verified_user: Depends = Depends(auth.get_verified_user),  # noqa: B008
+    verified_user: Depends = Depends(endpoint_functions.get_verified_user),  # noqa: B008
     db_session: Depends = Depends(database.get_db_session),  # noqa: B008
 ) -> ExperiencesTableItem:
     """Create new experience."""
-    created_experience = experiences.create_experience(
+    created_experience = endpoint_functions.create_experience(
         db_session=db_session,
         verified_user=verified_user,
         experience_to_create=experience_to_create,
@@ -36,7 +35,7 @@ def get_experience(
     db_session: Depends = Depends(database.get_db_session),  # noqa: B008
 ) -> ExperiencesTableItem:
     """Get experience based on id."""
-    experience = experiences.get_experience_by_id(
+    experience = endpoint_functions.get_experience_by_id(
         db_session=db_session,
         experience_id=experience_id,
     )
@@ -63,7 +62,7 @@ def get_experience_by_filter(
     db_session: Depends = Depends(database.get_db_session),  # noqa: B008
 ) -> list:
     """Filter experiences by matching string in specific field."""
-    experiences_filtered = experiences.get_experience_by_filters(
+    experiences_filtered = endpoint_functions.get_experience_by_filters(
         db_session=db_session,
         limit=limit,
         skip=skip,
@@ -91,11 +90,11 @@ def get_experience_by_filter(
 @experiences_router.put("/{experience_id}", response_model=ExperienceResponse)
 def update_experience(
     experience_update_info: ExperienceUpdateInfo,
-    verified_user: Depends = Depends(auth.get_verified_user),  # noqa: B008
+    verified_user: Depends = Depends(endpoint_functions.get_verified_user),  # noqa: B008
     db_session: Depends = Depends(database.get_db_session),  # noqa: B008
 ) -> ExperiencesTableItem:
     """Update experience content."""
-    experience = experiences.get_experience_by_id(
+    experience = endpoint_functions.get_experience_by_id(
         db_session=db_session,
         experience_id=experience_update_info.experience_id,
     )
@@ -109,7 +108,7 @@ def update_experience(
             detail="Not authorized to perform requested action",
         )
 
-    updated_experience = experiences.update_experience(
+    updated_experience = endpoint_functions.update_experience(
         db_session=db_session,
         experience_update_info=experience_update_info,
     )
@@ -123,11 +122,11 @@ def update_experience(
 @experiences_router.delete("/{experience_id}", response_model=ExperienceResponse)
 def delete_experience(
     experience_id: str,
-    verified_user: Depends = Depends(auth.get_verified_user),  # noqa: B008
+    verified_user: Depends = Depends(endpoint_functions.get_verified_user),  # noqa: B008
     db_session: Depends = Depends(database.get_db_session),  # noqa: B008
 ) -> ExperiencesTableItem:
     """Delete experience by id."""
-    experience = experiences.get_experience_by_id(
+    experience = endpoint_functions.get_experience_by_id(
         db_session=db_session,
         experience_id=experience_id,
     )
@@ -141,7 +140,7 @@ def delete_experience(
             detail="Not authorized to perform requested action",
         )
 
-    deleted_experience = experiences.delete_experience(
+    deleted_experience = endpoint_functions.delete_experience(
         db_session=db_session,
         experience_id=experience_id,
     )

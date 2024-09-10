@@ -2,9 +2,8 @@
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app import database
+from app import database, endpoint_functions
 from app.data import NewUser, UserResponse, UserUpdateInfo
-from app.endpoint_functions import auth, users
 
 users_router = APIRouter(prefix="/users")
 
@@ -15,18 +14,21 @@ def create_user(
     db_session: Depends = Depends(database.get_db_session),  # noqa: B008
 ) -> dict:
     """Create user endpoint."""
-    user = users.get_user_by_name(db_session=db_session, username=user_to_create.username)
+    user = endpoint_functions.get_user_by_name(
+        db_session=db_session,
+        username=user_to_create.username,
+    )
 
     if user is not None:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="User already exists")
 
-    return users.create_user(db_session=db_session, user_to_create=user_to_create)
+    return endpoint_functions.create_user(db_session=db_session, user_to_create=user_to_create)
 
 
 @users_router.get("/{user_id}", response_model=UserResponse)
 def get_user(user_id: str, db_session: Depends = Depends(database.get_db_session)) -> dict:  # noqa: B008
     """Get user endpoint."""
-    user = users.get_user_by_id(db_session=db_session, user_id=user_id)
+    user = endpoint_functions.get_user_by_id(db_session=db_session, user_id=user_id)
 
     if user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
@@ -38,12 +40,12 @@ def get_user(user_id: str, db_session: Depends = Depends(database.get_db_session
 def update_user(
     user_id: str,
     user_update_info: UserUpdateInfo,
-    verified_user: Depends = Depends(auth.get_verified_user),  # noqa: B008
+    verified_user: Depends = Depends(endpoint_functions.get_verified_user),  # noqa: B008
     db_session: Depends = Depends(database.get_db_session),  # noqa: B008
 ) -> dict:
     """Update user endpoint."""
     try:
-        user_to_update = users.get_user_by_id(db_session=db_session, user_id=user_id)
+        user_to_update = endpoint_functions.get_user_by_id(db_session=db_session, user_id=user_id)
     except Exception as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Bad request") from exc
 
@@ -56,17 +58,17 @@ def update_user(
             detail="Not authorized to perform requested action",
         )
 
-    return users.update_user(db_session=db_session, user_update_info=user_update_info)
+    return endpoint_functions.update_user(db_session=db_session, user_update_info=user_update_info)
 
 
 @users_router.delete("/{user_id}", response_model=UserResponse)
 def delete_user(
     user_id: str,
-    verified_user: Depends = Depends(auth.get_verified_user),  # noqa: B008
+    verified_user: Depends = Depends(endpoint_functions.get_verified_user),  # noqa: B008
     db_session: Depends = Depends(database.get_db_session),  # noqa: B008
 ) -> dict:
     """Delete user endpoint."""
-    user_to_delete = users.get_user_by_id(db_session=db_session, user_id=user_id)
+    user_to_delete = endpoint_functions.get_user_by_id(db_session=db_session, user_id=user_id)
 
     if user_to_delete is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
@@ -77,4 +79,4 @@ def delete_user(
             detail="Not authorized to perform requested action",
         )
 
-    return users.delete_user(db_session=db_session, user_id=user_to_delete.user_id)
+    return endpoint_functions.delete_user(db_session=db_session, user_id=user_to_delete.user_id)
