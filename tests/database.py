@@ -1,12 +1,11 @@
 """Module to create database tables."""
 
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.orm import Session, declarative_base, sessionmaker
 
-from app import database
+from app import data
 from app.app import app
-from app.config import settings
+from app.data import settings
 
 SQLALCHEMY_DATABASE_URL = (
     f"postgresql://{settings.db_user}:{settings.db_password}"
@@ -35,4 +34,4 @@ def override_get_db_session() -> Session:
         db_session.close()
 
 
-app.dependency_overrides[database.get_db_session] = override_get_db_session
+app.dependency_overrides[data.get_db_session] = override_get_db_session

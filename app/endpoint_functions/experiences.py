@@ -70,7 +70,7 @@ def create_experience(
     """Create a new experience."""
     experience = ExperiencesTableItem(
         user_id=str(verified_user.user_id),
-        **experience_to_create.dict(),
+        **experience_to_create.model_dump(),
     )
 
     try:
@@ -93,7 +93,7 @@ def update_experience(
         experience_id=experience_update_info.experience_id,
     )
 
-    for key, value in experience_update_info.dict().items():
+    for key, value in experience_update_info.model_dump().items():
         if value is not None:
             setattr(experience, key, value)
 
