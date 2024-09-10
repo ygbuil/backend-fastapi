@@ -11,7 +11,7 @@ PWD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def create_user(db_session: Session, user_to_create: NewUser) -> UsersTableItem:
     """Create a user and write it to database."""
     user_to_create.password = _hash_password(user_to_create.password)
-    new_user = UsersTableItem(**user_to_create.dict())
+    new_user = UsersTableItem(**user_to_create.model_dump())
 
     db_session.add(new_user)
     db_session.commit()
@@ -34,7 +34,7 @@ def update_user(db_session: Session, user_update_info: UserUpdateInfo) -> UsersT
     """Update user info and write it to database."""
     user = get_user_by_id(db_session, user_update_info.user_id)
 
-    for key, value in user_update_info.dict().items():
+    for key, value in user_update_info.model_dump().items():
         if value is not None:
             setattr(user, key, value)
 
