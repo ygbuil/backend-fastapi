@@ -1,5 +1,7 @@
 """__init__.py for data package."""
 
+from .config import settings
+from .database import get_db_session
 from .models import Base, ExperiencesTableItem, UsersTableItem
 from .schemas import (
     ExperienceFilters,
@@ -24,4 +26,6 @@ __all__ = [
     "ExperienceUpdateInfo",
     "ExperienceFilters",
     "Base",
+    "settings",
+    "get_db_session",
 ]

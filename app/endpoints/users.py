@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app import database, endpoint_functions
+from app import data, endpoint_functions
 from app.data import NewUser, UserResponse, UserUpdateInfo
 
 users_router = APIRouter(prefix="/users")
@@ -11,7 +11,7 @@ users_router = APIRouter(prefix="/users")
 @users_router.post("", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def create_user(
     user_to_create: NewUser,
-    db_session: Depends = Depends(database.get_db_session),  # noqa: B008
+    db_session: Depends = Depends(data.get_db_session),  # noqa: B008
 ) -> dict:
     """Create user endpoint."""
     user = endpoint_functions.get_user_by_name(
@@ -26,7 +26,7 @@ def create_user(
 
 
 @users_router.get("/{user_id}", response_model=UserResponse)
-def get_user(user_id: str, db_session: Depends = Depends(database.get_db_session)) -> dict:  # noqa: B008
+def get_user(user_id: str, db_session: Depends = Depends(data.get_db_session)) -> dict:  # noqa: B008
     """Get user endpoint."""
     user = endpoint_functions.get_user_by_id(db_session=db_session, user_id=user_id)
 
@@ -41,7 +41,7 @@ def update_user(
     user_id: str,
     user_update_info: UserUpdateInfo,
     verified_user: Depends = Depends(endpoint_functions.get_verified_user),  # noqa: B008
-    db_session: Depends = Depends(database.get_db_session),  # noqa: B008
+    db_session: Depends = Depends(data.get_db_session),  # noqa: B008
 ) -> dict:
     """Update user endpoint."""
     try:
@@ -65,7 +65,7 @@ def update_user(
 def delete_user(
     user_id: str,
     verified_user: Depends = Depends(endpoint_functions.get_verified_user),  # noqa: B008
-    db_session: Depends = Depends(database.get_db_session),  # noqa: B008
+    db_session: Depends = Depends(data.get_db_session),  # noqa: B008
 ) -> dict:
     """Delete user endpoint."""
     user_to_delete = endpoint_functions.get_user_by_id(db_session=db_session, user_id=user_id)

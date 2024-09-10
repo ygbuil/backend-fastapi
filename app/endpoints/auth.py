@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 
-from app import database, endpoint_functions
+from app import data, endpoint_functions
 
 PWD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -17,7 +17,7 @@ auth_router = APIRouter()
 @auth_router.post("/token")
 def login(
     form_data: OAuth2PasswordRequestForm = Depends(),  # noqa: B008
-    db_session: Depends = Depends(database.get_db_session),  # noqa: B008
+    db_session: Depends = Depends(data.get_db_session),  # noqa: B008
 ) -> dict:
     """Get authentication bearer token."""
     user = endpoint_functions.get_user_by_name(db_session=db_session, username=form_data.username)

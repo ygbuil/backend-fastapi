@@ -5,7 +5,7 @@ from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app import database, endpoint_functions
+from app import data, endpoint_functions
 from app.data import ExperienceResponse, ExperiencesTableItem, ExperienceUpdateInfo, NewExperience
 
 experiences_router = APIRouter(prefix="/experiences")
@@ -15,7 +15,7 @@ experiences_router = APIRouter(prefix="/experiences")
 def create_experience(
     experience_to_create: NewExperience,
     verified_user: Depends = Depends(endpoint_functions.get_verified_user),  # noqa: B008
-    db_session: Depends = Depends(database.get_db_session),  # noqa: B008
+    db_session: Depends = Depends(data.get_db_session),  # noqa: B008
 ) -> ExperiencesTableItem:
     """Create new experience."""
     created_experience = endpoint_functions.create_experience(
@@ -32,7 +32,7 @@ def create_experience(
 @experiences_router.get("/{experience_id}", response_model=ExperienceResponse)
 def get_experience(
     experience_id: str,
-    db_session: Depends = Depends(database.get_db_session),  # noqa: B008
+    db_session: Depends = Depends(data.get_db_session),  # noqa: B008
 ) -> ExperiencesTableItem:
     """Get experience based on id."""
     experience = endpoint_functions.get_experience_by_id(
@@ -59,7 +59,7 @@ def get_experience_by_filter(
     location: Optional[str] = "",
     user: Optional[str] = None,
     rating: Optional[int] = None,
-    db_session: Depends = Depends(database.get_db_session),  # noqa: B008
+    db_session: Depends = Depends(data.get_db_session),  # noqa: B008
 ) -> list:
     """Filter experiences by matching string in specific field."""
     experiences_filtered = endpoint_functions.get_experience_by_filters(
@@ -91,7 +91,7 @@ def get_experience_by_filter(
 def update_experience(
     experience_update_info: ExperienceUpdateInfo,
     verified_user: Depends = Depends(endpoint_functions.get_verified_user),  # noqa: B008
-    db_session: Depends = Depends(database.get_db_session),  # noqa: B008
+    db_session: Depends = Depends(data.get_db_session),  # noqa: B008
 ) -> ExperiencesTableItem:
     """Update experience content."""
     experience = endpoint_functions.get_experience_by_id(
@@ -123,7 +123,7 @@ def update_experience(
 def delete_experience(
     experience_id: str,
     verified_user: Depends = Depends(endpoint_functions.get_verified_user),  # noqa: B008
-    db_session: Depends = Depends(database.get_db_session),  # noqa: B008
+    db_session: Depends = Depends(data.get_db_session),  # noqa: B008
 ) -> ExperiencesTableItem:
     """Delete experience by id."""
     experience = endpoint_functions.get_experience_by_id(

@@ -7,8 +7,8 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 
-from app.config import settings
-from app.database import get_db_session
+from app import data
+from app.data import settings
 from app.endpoint_functions import users
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -31,7 +31,7 @@ def create_token(username: str, user_id: UUID, color: str, expiration_time: int)
 
 def get_verified_user(
     token: str = Depends(oauth2_scheme),
-    db_session: Depends = Depends(get_db_session),  # noqa: B008
+    db_session: Depends = Depends(data.get_db_session),  # noqa: B008
 ) -> dict:
     """Get the authorised user for the received token."""
     try:

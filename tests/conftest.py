@@ -7,7 +7,7 @@ from fastapi import status
 from fastapi.testclient import TestClient
 
 from app import endpoint_functions
-from app.database import Base
+from app.data import Base
 from tests.database import app, engine
 
 
