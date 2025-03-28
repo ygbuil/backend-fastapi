@@ -1,39 +1,39 @@
-[tool.poetry]
+[project]
 name = "backend-fastapi"
 version = "0.1.0"
-description = ""
-authors = ["Llorenç Buil"]
+description = "Add your description here"
 readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.11"
-fastapi = "^0.114.0"
-pydantic = "^2.9.0"
-sqlalchemy = "^2.0.34"
-pre-commit = "^3.8.0"
-passlib = "^1.7.4"
-ruff = "^0.6.4"
-python-jose = "^3.3.0"
-uvicorn = "^0.30.6"
-pydantic-settings = "^2.4.0"
-psycopg2-binary = "^2.9.9"
-python-multipart = "^0.0.9"
-pytest = "^8.3.2"
-httpx = "^0.27.2"
+requires-python = ">=3.12"
+dependencies = [
+    "loguru>=0.7.2",
+    "click>=8.1.7",
+    "fastapi>=0.114.0",
+    "pydantic>=2.9.0",
+    "sqlalchemy>=2.0.34",
+    "passlib>=1.7.4",
+    "python-jose>=3.3.0",
+    "uvicorn>=0.30.6",
+    "pydantic-settings>=2.4.0",
+    "psycopg2-binary>=2.9.9",
+    "python-multipart>=0.0.9",
+    "httpx>=0.27.2"
+]
 
 [tool.ruff]
 line-length = 100
-lint.select = [
-    "F", "E", "W", "ARG", "C90", "I", "N", "D", "UP", "YTT", "ANN", "S", "BLE", "FBT", "B", "A",
-    "COM", "C40", "DTZ", "T10", "DJ", "EXE", "ISC", "ICN", "G", "INP", "PIE", "T20", "PYI", "PT",
-    "Q", "RSE", "RET", "SLF", "SIM", "TID", "TCH", "ARG", "PTH", "ERA", "PD", "PGH", "PL", "TRY",
-    "NPY", "RUF"
-]
+lint.select = ["ALL"]
 lint.ignore = [
-    "PD901", "ANN002", "ANN003", "TRY002", "TRY003", "BLE001", "PLR0913", "S101", "ANN401", "PT001",
-    "PLW2901", "RUF005", "PLR1704"
+    "ANN002", "ANN003", "ANN401", "COM812", "D203", "D205", "D213", "D402", "EXE002", "FA102",
+    "ISC001", "PD901", "PGH003", "PLR0913", "S101", "TRY003"
 ]
 
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.14.1",
+    "pre-commit>=4.1.0",
+    "pytest>=8.3.4",
+    "ruff>=0.9.3",
+]
