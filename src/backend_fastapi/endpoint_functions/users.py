@@ -1,6 +1,6 @@
 """Functions that deal with users."""
 
-from passlib.context import CryptContext
+from passlib.context import CryptContext  # type: ignore
 from sqlalchemy.orm import Session
 
 from backend_fastapi.data import NewUser, UsersTableItem, UserUpdateInfo
@@ -20,12 +20,12 @@ def create_user(db_session: Session, user_to_create: NewUser) -> UsersTableItem:
     return new_user
 
 
-def get_user_by_name(db_session: Session, username: str) -> UsersTableItem:
+def get_user_by_name(db_session: Session, username: str) -> UsersTableItem | None:
     """Get user by name from database."""
     return db_session.query(UsersTableItem).filter(UsersTableItem.username == username).first()
 
 
-def get_user_by_id(db_session: Session, user_id: str) -> UsersTableItem:
+def get_user_by_id(db_session: Session, user_id: str) -> UsersTableItem | None:
     """Get user by id from database."""
     return db_session.query(UsersTableItem).filter(UsersTableItem.user_id == user_id).first()
 
