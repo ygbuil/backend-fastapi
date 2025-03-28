@@ -1,24 +1,29 @@
 """Database config."""
 
-from pathlib import Path
+from dataclasses import dataclass
 
-from pydantic_settings import BaseSettings
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 
-class Settings(BaseSettings):
+@dataclass
+class Settings:
     """Database settings."""
 
-    db_user: str
-    db_password: str
-    db_host: str
-    db_port: int
-    db_name: str
-    secret_key: str
-
-    class Config:
-        """Config."""
-
-        env_file = Path.cwd() / Path(".env")
+    db_user: str | None
+    db_password: str | None
+    db_host: str | None
+    db_port: int | None
+    db_name: str | None
+    secret_key: str | None
 
 
-settings = Settings()
+settings = Settings(
+    db_user=os.getenv('DB_USER'),
+    db_password=os.getenv('DB_PASSWORD'),
+    db_host=os.getenv('DB_HOST'),
+    db_port=int(os.getenv('DB_PORT', 5432),),
+    db_name=os.getenv('DB_NAME'),
+    secret_key=os.getenv('SECRET_KEY'),
+)
