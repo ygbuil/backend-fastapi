@@ -4,7 +4,7 @@ from fastapi import HTTPException, status
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
-from app.data import ExperiencesTableItem, ExperienceUpdateInfo, NewExperience, User, UsersTableItem
+from backend_fastapi.data import ExperiencesTableItem, ExperienceUpdateInfo, NewExperience, User, UsersTableItem
 
 
 def get_experience_by_id(db_session: Session, experience_id: str) -> ExperiencesTableItem:

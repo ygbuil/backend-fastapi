@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "run_app",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "uvicorn",
+                "app.app:app",
+                "--host", "127.0.0.1",
+                "--port", "5500",
+                "--reload"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}

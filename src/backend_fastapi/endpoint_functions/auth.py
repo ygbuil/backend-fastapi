@@ -7,9 +7,9 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 
-from app import data
-from app.data import settings
-from app.endpoint_functions import users
+from backend_fastapi import data
+from backend_fastapi.data import settings
+from backend_fastapi.endpoint_functions import users
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 

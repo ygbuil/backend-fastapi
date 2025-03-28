@@ -2,8 +2,8 @@
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app import data, endpoint_functions
-from app.data import NewUser, UserResponse, UserUpdateInfo
+from backend_fastapi import data, endpoint_functions
+from backend_fastapi.data import NewUser, UserResponse, UserUpdateInfo
 
 users_router = APIRouter(prefix="/users")
 

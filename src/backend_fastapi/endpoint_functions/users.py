@@ -3,7 +3,7 @@
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
-from app.data import NewUser, UsersTableItem, UserUpdateInfo
+from backend_fastapi.data import NewUser, UsersTableItem, UserUpdateInfo
 
 PWD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
 

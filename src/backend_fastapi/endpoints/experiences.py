@@ -5,8 +5,8 @@ from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app import data, endpoint_functions
-from app.data import ExperienceResponse, ExperiencesTableItem, ExperienceUpdateInfo, NewExperience
+from backend_fastapi import data, endpoint_functions
+from backend_fastapi.data import ExperienceResponse, ExperiencesTableItem, ExperienceUpdateInfo, NewExperience
 
 experiences_router = APIRouter(prefix="/experiences")
 

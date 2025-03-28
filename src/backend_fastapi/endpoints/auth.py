@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 
-from app import data, endpoint_functions
+from backend_fastapi import data, endpoint_functions
 
 PWD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
