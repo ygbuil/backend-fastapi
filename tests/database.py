@@ -1,5 +1,7 @@
 """Module to create database tables."""
 
+from collections.abc import Generator
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, declarative_base, sessionmaker
 
@@ -25,7 +27,7 @@ Base = declarative_base()
 Base.metadata.create_all(bind=engine)
 
 
-def override_get_db_session() -> Session:
+def override_get_db_session() -> Generator[Session]:
     """Create a session with SessionLocal."""
     db_session = TestingSessionLocal()
     try:

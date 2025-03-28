@@ -26,14 +26,14 @@ def get_experience_by_id(db_session: Session, experience_id: str) -> Experiences
 
 def get_experience_by_filters(
     db_session: Session,
-    limit: int,
-    skip: int,
-    experience: str,
-    title: str,
-    description: str,
-    location: str,
-    user: str,
-    rating: int,
+    limit: int | None,
+    skip: int | None,
+    experience: str | None,
+    title: str | None,
+    description: str | None,
+    location: str | None,
+    user: str | None,
+    rating: int | None,
 ) -> list:
     """Get experience based on keywords for each filed."""
     return (

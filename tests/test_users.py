@@ -1,5 +1,7 @@
 """Testing for users endpoints."""
 
+from typing import Any
+
 from fastapi import status
 from fastapi.testclient import TestClient
 
@@ -21,7 +23,7 @@ def test_create_user(client: TestClient) -> None:
     assert response.status_code == status.HTTP_201_CREATED
 
 
-def test_get_acess_token(client: TestClient, test_user_1: dict) -> None:
+def test_get_acess_token(client: TestClient, test_user_1: dict[str, Any]) -> None:
     """Test get access token."""
     response = client.post(
         "/token",
@@ -35,7 +37,7 @@ def test_get_acess_token(client: TestClient, test_user_1: dict) -> None:
     assert response.status_code == status.HTTP_200_OK
 
 
-def test_update_user(client: TestClient, test_user_1: dict, test_token_1: str) -> None:
+def test_update_user(client: TestClient, test_user_1: dict[str, Any], test_token_1: str) -> None:
     """Test update user."""
     client.headers = {**client.headers, "Authorization": f"Bearer {test_token_1}"}
 
@@ -56,7 +58,9 @@ def test_update_user(client: TestClient, test_user_1: dict, test_token_1: str) -
     assert response.json()["color"] == "red"
 
 
-def test_update_user_unauthorized(client: TestClient, test_user_1: dict, test_token_2: str) -> None:
+def test_update_user_unauthorized(
+    client: TestClient, test_user_1: dict[str, Any], test_token_2: str
+) -> None:
     """Test update user with unauthorized user."""
     response = client.put(
         f"/users/{test_user_1['user_id']}",
@@ -75,7 +79,7 @@ def test_update_user_unauthorized(client: TestClient, test_user_1: dict, test_to
     assert response.status_code == status.HTTP_403_FORBIDDEN
 
 
-def test_delete_user(client: TestClient, test_user_1: dict, test_token_1: str) -> None:
+def test_delete_user(client: TestClient, test_user_1: dict[str, Any], test_token_1: str) -> None:
     """Test delete user."""
     client.headers = {**client.headers, "Authorization": f"Bearer {test_token_1}"}
 
@@ -84,7 +88,9 @@ def test_delete_user(client: TestClient, test_user_1: dict, test_token_1: str) -
     assert response.status_code == status.HTTP_200_OK
 
 
-def test_delete_user_unauthorized(client: TestClient, test_user_1: dict, test_token_2: str) -> None:
+def test_delete_user_unauthorized(
+    client: TestClient, test_user_1: dict[str, Any], test_token_2: str
+) -> None:
     """Test delete user with unauthorized user."""
     response = client.delete(
         f"/users/{test_user_1['user_id']}",

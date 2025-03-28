@@ -4,6 +4,7 @@ import datetime
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
 
 from backend_fastapi import data, endpoint_functions
 from backend_fastapi.data import (
@@ -11,6 +12,7 @@ from backend_fastapi.data import (
     ExperiencesTableItem,
     ExperienceUpdateInfo,
     NewExperience,
+    UsersTableItem,
 )
 
 experiences_router = APIRouter(prefix="/experiences")
@@ -19,8 +21,8 @@ experiences_router = APIRouter(prefix="/experiences")
 @experiences_router.post("", response_model=ExperienceResponse, status_code=status.HTTP_201_CREATED)
 def create_experience(
     experience_to_create: NewExperience,
-    verified_user: Annotated[Depends, Depends(endpoint_functions.get_verified_user)],
-    db_session: Annotated[Depends, Depends(data.get_db_session)],
+    verified_user: Annotated[UsersTableItem, Depends(endpoint_functions.get_verified_user)],
+    db_session: Annotated[Session, Depends(data.get_db_session)],
 ) -> ExperiencesTableItem:
     """Create new experience."""
     created_experience = endpoint_functions.create_experience(
@@ -37,7 +39,7 @@ def create_experience(
 @experiences_router.get("/{experience_id}", response_model=ExperienceResponse)
 def get_experience(
     experience_id: str,
-    db_session: Annotated[Depends, Depends(data.get_db_session)],
+    db_session: Annotated[Session, Depends(data.get_db_session)],
 ) -> ExperiencesTableItem:
     """Get experience based on id."""
     experience = endpoint_functions.get_experience_by_id(
@@ -56,7 +58,7 @@ def get_experience(
 
 @experiences_router.get("", response_model=list[ExperienceResponse])
 def get_experience_by_filter(
-    db_session: Annotated[Depends, Depends(data.get_db_session)],
+    db_session: Annotated[Session, Depends(data.get_db_session)],
     limit: int = 10,
     skip: int = 0,
     experience: str | None = "",
@@ -93,8 +95,8 @@ def get_experience_by_filter(
 @experiences_router.put("/{experience_id}", response_model=ExperienceResponse)
 def update_experience(
     experience_update_info: ExperienceUpdateInfo,
-    verified_user: Annotated[Depends, Depends(endpoint_functions.get_verified_user)],
-    db_session: Annotated[Depends, Depends(data.get_db_session)],
+    verified_user: Annotated[UsersTableItem, Depends(endpoint_functions.get_verified_user)],
+    db_session: Annotated[Session, Depends(data.get_db_session)],
 ) -> ExperiencesTableItem:
     """Update experience content."""
     experience = endpoint_functions.get_experience_by_id(
@@ -125,8 +127,8 @@ def update_experience(
 @experiences_router.delete("/{experience_id}", response_model=ExperienceResponse)
 def delete_experience(
     experience_id: str,
-    verified_user: Annotated[Depends, Depends(endpoint_functions.get_verified_user)],
-    db_session: Annotated[Depends, Depends(data.get_db_session)],
+    verified_user: Annotated[UsersTableItem, Depends(endpoint_functions.get_verified_user)],
+    db_session: Annotated[Session, Depends(data.get_db_session)],
 ) -> ExperiencesTableItem:
     """Delete experience by id."""
     experience = endpoint_functions.get_experience_by_id(

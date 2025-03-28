@@ -25,27 +25,27 @@ app.add_middleware(
 @click.command()
 @click.option("--host")
 @click.option("--port")
-def run_app(host: str, port: str) -> str:
-    """Entry point to say hello.
+def run_app(host: str, port: str) -> None:
+    """Entry point to run the app.
 
     Args:
         host: Host.
         port: Port.
 
     Returns:
-        Greet.
+        None.
     """
-    return _run_app(host, port)
+    _run_app(host, port)
 
 
-def _run_app(host: str, port: str) -> str:
-    """Say hello to user.
+def _run_app(host: str, port: str) -> None:
+    """Run the app.
 
     Args:
         host: Host.
         port: Port.
 
     Returns:
-        Greet.
+        None.
     """
     uvicorn.run(app, host=host, port=int(port))

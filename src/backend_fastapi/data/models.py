@@ -2,7 +2,7 @@
 
 import uuid
 
-from sqlalchemy import FLOAT, Column, ForeignKey, Integer, String
+from sqlalchemy import Column, Float, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import text
@@ -21,8 +21,8 @@ class UsersTableItem(Base):
     password = Column(String, nullable=False)
     color = Column(String, nullable=False)
     location = Column(String, nullable=False)
-    lat = Column(FLOAT(precision=32), nullable=False)
-    lon = Column(FLOAT(precision=32), nullable=False)
+    lat = Column(Float, nullable=False)
+    lon = Column(Float, nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
 
 
@@ -37,8 +37,8 @@ class ExperiencesTableItem(Base):
     description = Column(String, nullable=False)
     location = Column(String, nullable=False)
     rating = Column(Integer, nullable=False)
-    lat = Column(FLOAT(precision=32), nullable=False)
-    lon = Column(FLOAT(precision=32), nullable=False)
+    lat = Column(Float, nullable=False)
+    lon = Column(Float, nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
 
     owner = relationship("UsersTableItem", lazy="subquery")

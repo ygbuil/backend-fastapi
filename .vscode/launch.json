@@ -1,17 +1,17 @@
 {
-  "version": "2.0.0",
-  "configurations": [
-      {
-          "name": "run_app",
-          "type": "debugpy",
-          "request": "launch",
-          "justMyCode": false,
-          "program": "${workspaceFolder}/.venv/bin/backend-fastapi",
-          "args": [
-            "run-app",
-            "--host", "127.0.0.1",
-            "--port", "8000",
-          ],
-      }
-  ],
+    "version": "2.0.0",
+    "configurations": [
+        {
+            "name": "run_app",
+            "type": "debugpy",
+            "request": "launch",
+            "justMyCode": false,
+            "program": "${workspaceFolder}/.venv/bin/backend-fastapi",
+            "args": [
+                "run-app",
+                "--host", "127.0.0.1",
+                "--port", "8000",
+            ],
+        }
+    ],
 }

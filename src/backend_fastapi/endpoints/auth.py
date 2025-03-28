@@ -6,6 +6,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from passlib.context import CryptContext
+from sqlalchemy.orm import Session
 
 from backend_fastapi import data, endpoint_functions
 
@@ -18,7 +19,7 @@ auth_router = APIRouter()
 @auth_router.post("/token")
 def login(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
-    db_session: Annotated[Depends, Depends(data.get_db_session)],
+    db_session: Annotated[Session, Depends(data.get_db_session)],
 ) -> dict:
     """Get authentication bearer token."""
     user = endpoint_functions.get_user_by_name(db_session=db_session, username=form_data.username)

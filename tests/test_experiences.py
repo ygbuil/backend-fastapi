@@ -1,5 +1,7 @@
 """Testing for experiences endpoints."""
 
+from typing import Any
+
 from fastapi import status
 from fastapi.testclient import TestClient
 
@@ -25,7 +27,9 @@ def test_create_experience(client: TestClient, test_token_1: str) -> None:
     assert response.status_code == status.HTTP_201_CREATED
 
 
-def test_update_experience(client: TestClient, test_experience_1: dict, test_token_1: str) -> None:
+def test_update_experience(
+    client: TestClient, test_experience_1: dict[str, Any], test_token_1: str
+) -> None:
     """Test update experience."""
     client.headers = {**client.headers, "Authorization": f"Bearer {test_token_1}"}
 
@@ -48,7 +52,7 @@ def test_update_experience(client: TestClient, test_experience_1: dict, test_tok
 
 def test_update_experience_unauthorized(
     client: TestClient,
-    test_experience_1: dict,
+    test_experience_1: dict[str, Any],
     test_token_2: str,
 ) -> None:
     """Test update experience with unauthorized user."""
@@ -69,7 +73,9 @@ def test_update_experience_unauthorized(
     assert response.status_code == status.HTTP_403_FORBIDDEN
 
 
-def test_delete_experience(client: TestClient, test_experience_1: dict, test_token_1: str) -> None:
+def test_delete_experience(
+    client: TestClient, test_experience_1: dict[str, Any], test_token_1: str
+) -> None:
     """Test delete experience."""
     client.headers = {**client.headers, "Authorization": f"Bearer {test_token_1}"}
 
@@ -80,7 +86,7 @@ def test_delete_experience(client: TestClient, test_experience_1: dict, test_tok
 
 def test_delete_experience_unauthorized(
     client: TestClient,
-    test_experience_1: dict,
+    test_experience_1: dict[str, Any],
     test_token_2: str,
 ) -> None:
     """Test delete experience with unauthorized user."""
