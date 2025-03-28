@@ -3,11 +3,11 @@
 from datetime import timedelta
 
 import pytest
+from backend_fastapi import endpoint_functions
+from backend_fastapi.data import Base
 from fastapi import status
 from fastapi.testclient import TestClient
 
-from app import endpoint_functions
-from app.data import Base
 from tests.database import app, engine
 
 
