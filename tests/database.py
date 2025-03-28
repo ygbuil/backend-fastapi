@@ -1,10 +1,11 @@
 """Module to create database tables."""
 
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session, declarative_base, sessionmaker
+
 from backend_fastapi import data
 from backend_fastapi.data import settings
 from backend_fastapi.entry_points import app
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, declarative_base, sessionmaker
 
 SQLALCHEMY_DATABASE_URL = (
     f"postgresql://{settings.db_user}:{settings.db_password}"

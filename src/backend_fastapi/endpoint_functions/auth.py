@@ -16,7 +16,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 def create_token(username: str, user_id: UUID, color: str, expiration_time: int) -> str:
     """Create token for the user."""
-    expire_date = datetime.datetime.now(tz=datetime.timezone.utc) + expiration_time
+    expire_date = datetime.datetime.now(tz=datetime.UTC) + expiration_time
     return jwt.encode(
         {
             "username": username,

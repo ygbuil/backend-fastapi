@@ -1,5 +1,7 @@
 """Users endpoints."""
 
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from backend_fastapi import data, endpoint_functions
@@ -11,7 +13,7 @@ users_router = APIRouter(prefix="/users")
 @users_router.post("", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def create_user(
     user_to_create: NewUser,
-    db_session: Depends = Depends(data.get_db_session),  # noqa: B008
+    db_session: Annotated[Depends, Depends(data.get_db_session)],
 ) -> dict:
     """Create user endpoint."""
     user = endpoint_functions.get_user_by_name(
@@ -26,7 +28,7 @@ def create_user(
 
 
 @users_router.get("/{user_id}", response_model=UserResponse)
-def get_user(user_id: str, db_session: Depends = Depends(data.get_db_session)) -> dict:  # noqa: B008
+def get_user(user_id: str, db_session: Annotated[Depends, Depends(data.get_db_session)]) -> dict:
     """Get user endpoint."""
     user = endpoint_functions.get_user_by_id(db_session=db_session, user_id=user_id)
 
@@ -40,8 +42,8 @@ def get_user(user_id: str, db_session: Depends = Depends(data.get_db_session)) -
 def update_user(
     user_id: str,
     user_update_info: UserUpdateInfo,
-    verified_user: Depends = Depends(endpoint_functions.get_verified_user),  # noqa: B008
-    db_session: Depends = Depends(data.get_db_session),  # noqa: B008
+    verified_user: Annotated[Depends, Depends(endpoint_functions.get_verified_user)],
+    db_session: Annotated[Depends, Depends(data.get_db_session)],
 ) -> dict:
     """Update user endpoint."""
     try:
@@ -64,8 +66,8 @@ def update_user(
 @users_router.delete("/{user_id}", response_model=UserResponse)
 def delete_user(
     user_id: str,
-    verified_user: Depends = Depends(endpoint_functions.get_verified_user),  # noqa: B008
-    db_session: Depends = Depends(data.get_db_session),  # noqa: B008
+    verified_user: Annotated[Depends, Depends(endpoint_functions.get_verified_user)],
+    db_session: Annotated[Depends, Depends(data.get_db_session)],
 ) -> dict:
     """Delete user endpoint."""
     user_to_delete = endpoint_functions.get_user_by_id(db_session=db_session, user_id=user_id)

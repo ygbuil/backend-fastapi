@@ -1,7 +1,6 @@
 """Schemas for requests and responses."""
 
 from datetime import datetime
-from typing import Optional
 from uuid import UUID
 
 from pydantic import BaseModel
@@ -46,12 +45,12 @@ class UserUpdateInfo(BaseModel):
     """UserUpdateInfo schema."""
 
     user_id: str
-    username: Optional[str]
-    color: Optional[str]
-    location: Optional[str]
-    lat: Optional[float]
-    lon: Optional[float]
-    password: Optional[str]
+    username: str | None
+    color: str | None
+    location: str | None
+    lat: float | None
+    lon: float | None
+    password: str | None
 
 
 class NewExperience(BaseModel):
@@ -85,21 +84,21 @@ class ExperienceUpdateInfo(BaseModel):
     """ExperienceUpdateInfo schema."""
 
     experience_id: str
-    title: Optional[str]
-    description: Optional[str]
-    location: Optional[str]
-    lat: Optional[float]
-    lon: Optional[float]
-    rating: Optional[int]
+    title: str | None
+    description: str | None
+    location: str | None
+    lat: float | None
+    lon: float | None
+    rating: int | None
 
 
 class ExperienceFilters(BaseModel):
     """ExperienceFilters schema."""
 
-    experience_id: Optional[str]
-    user_id: Optional[str]
-    title: Optional[str]
-    description: Optional[str]
-    location: Optional[str]
-    rating: Optional[str]
-    created_at: Optional[str]
+    experience_id: str | None
+    user_id: str | None
+    title: str | None
+    description: str | None
+    location: str | None
+    rating: str | None
+    created_at: str | None

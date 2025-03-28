@@ -3,15 +3,15 @@
 from datetime import timedelta
 
 import pytest
-from backend_fastapi import endpoint_functions
-from backend_fastapi.data import Base
 from fastapi import status
 from fastapi.testclient import TestClient
 
+from backend_fastapi import endpoint_functions
+from backend_fastapi.data import Base
 from tests.database import app, engine
 
 
-@pytest.fixture()
+@pytest.fixture
 def client() -> TestClient:
     """Client with test database."""
     Base.metadata.drop_all(bind=engine)
@@ -20,7 +20,7 @@ def client() -> TestClient:
     return TestClient(app)
 
 
-@pytest.fixture()
+@pytest.fixture
 def test_user_1(client: TestClient) -> dict:
     """Testing user number 1."""
     response = client.post(
@@ -43,7 +43,7 @@ def test_user_1(client: TestClient) -> dict:
     return test_user_1
 
 
-@pytest.fixture()
+@pytest.fixture
 def test_user_2(client: TestClient) -> dict:
     """Testing user number 2."""
     response = client.post(
@@ -66,7 +66,7 @@ def test_user_2(client: TestClient) -> dict:
     return test_user_2
 
 
-@pytest.fixture()
+@pytest.fixture
 def test_token_1(test_user_1: dict) -> str:
     """Token for testing user number 1."""
     return endpoint_functions.create_token(
@@ -77,7 +77,7 @@ def test_token_1(test_user_1: dict) -> str:
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def test_token_2(test_user_2: dict) -> str:
     """Token for testing user number 2."""
     return endpoint_functions.create_token(
@@ -88,7 +88,7 @@ def test_token_2(test_user_2: dict) -> str:
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def test_experience_1(client: TestClient, test_token_1: dict) -> dict:
     """Experience written by testing user number 1."""
     client.headers = {**client.headers, "Authorization": f"Bearer {test_token_1}"}
