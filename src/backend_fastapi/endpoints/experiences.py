@@ -32,7 +32,7 @@ def create_experience(
     )
     return _add_lifetime_to_experience(
         experience=created_experience,
-        created_at=created_experience.created_at,
+        created_at=created_experience.created_at,  # type: ignore
     )
 
 
@@ -52,7 +52,7 @@ def get_experience(
 
     return _add_lifetime_to_experience(
         experience=experience,
-        created_at=experience.created_at,
+        created_at=experience.created_at,  # type: ignore
     )
 
 
@@ -67,7 +67,7 @@ def get_experience_by_filter(
     location: str | None = "",
     user: str | None = None,
     rating: int | None = None,
-) -> list:
+) -> list[ExperiencesTableItem]:
     """Filter experiences by matching string in specific field."""
     filtered_experiences = endpoint_functions.get_experience_by_filters(
         db_session=db_session,
@@ -86,7 +86,8 @@ def get_experience_by_filter(
 
     return [
         _add_lifetime_to_experience(
-            experience=filtered_experience, created_at=filtered_experience.created_at
+            experience=filtered_experience,
+            created_at=filtered_experience.created_at,  # type: ignore
         )
         for filtered_experience in filtered_experiences
     ]
@@ -115,12 +116,13 @@ def update_experience(
 
     updated_experience = endpoint_functions.update_experience(
         db_session=db_session,
+        experience=experience,
         experience_update_info=experience_update_info,
     )
 
     return _add_lifetime_to_experience(
         experience=updated_experience,
-        created_at=updated_experience.created_at,
+        created_at=updated_experience.created_at,  # type: ignore
     )
 
 
@@ -147,18 +149,18 @@ def delete_experience(
 
     deleted_experience = endpoint_functions.delete_experience(
         db_session=db_session,
-        experience_id=experience_id,
+        experience=experience,
     )
 
     return _add_lifetime_to_experience(
         experience=deleted_experience,
-        created_at=deleted_experience.created_at,
+        created_at=deleted_experience.created_at,  # type: ignore
     )
 
 
 def _add_lifetime_to_experience(
     experience: ExperiencesTableItem, created_at: datetime.datetime
-) -> str:
+) -> ExperiencesTableItem:
     """Calculate the time that happened since a experience was created."""
     days_dif = (datetime.datetime.now(tz=datetime.UTC) - created_at).days
 

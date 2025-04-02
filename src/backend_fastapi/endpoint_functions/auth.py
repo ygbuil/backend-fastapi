@@ -2,14 +2,16 @@
 
 import datetime
 from datetime import timedelta
+from typing import Annotated
 from uuid import UUID
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
+from jose import JWTError, jwt  # type: ignore
+from sqlalchemy.orm import Session
 
 from backend_fastapi import data
-from backend_fastapi.data import settings
+from backend_fastapi.data import UsersTableItem, settings
 from backend_fastapi.endpoint_functions import users
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -18,7 +20,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 def create_token(username: str, user_id: UUID, color: str, expiration_time: timedelta) -> str:
     """Create token for the user."""
     expire_date = datetime.datetime.now(tz=datetime.UTC) + expiration_time
-    return jwt.encode(
+    return jwt.encode(  # type: ignore
         {
             "username": username,
             "user_id": str(user_id),
@@ -31,9 +33,9 @@ def create_token(username: str, user_id: UUID, color: str, expiration_time: time
 
 
 def get_verified_user(
-    token: str = Depends(oauth2_scheme),
-    db_session: Depends = Depends(data.get_db_session),  # noqa: B008
-) -> dict:
+    token: Annotated[str, Depends(oauth2_scheme)],
+    db_session: Annotated[Session, Depends(data.get_db_session)],
+) -> UsersTableItem | None:
     """Get the authorised user for the received token."""
     try:
         payload = jwt.decode(token, settings.secret_key, algorithms="HS256")

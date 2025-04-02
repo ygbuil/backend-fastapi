@@ -44,7 +44,7 @@ def update_user(
     return user
 
 
-def delete_user(db_session: Session, user: str) -> UsersTableItem:
+def delete_user(db_session: Session, user: UsersTableItem) -> UsersTableItem:
     """Create user from database."""
     db_session.delete(user)
     db_session.commit()

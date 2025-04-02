@@ -15,8 +15,8 @@ from tests.database import app, engine
 @pytest.fixture
 def client() -> TestClient:
     """Client with test database."""
-    Base.metadata.drop_all(bind=engine)
-    Base.metadata.create_all(bind=engine)
+    Base.metadata.drop_all(bind=engine)  # type: ignore
+    Base.metadata.create_all(bind=engine)  # type: ignore
 
     return TestClient(app)
 

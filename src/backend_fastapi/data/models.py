@@ -41,4 +41,4 @@ class ExperiencesTableItem(Base):  # type: ignore
     lon = Column(Float, nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
 
-    owner = relationship("UsersTableItem", lazy="subquery")
+    owner = relationship("UsersTableItem", lazy="subquery")  # type: ignore

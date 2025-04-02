@@ -34,7 +34,7 @@ def get_experience_by_filters(
     location: str | None,
     user: str | None,
     rating: int | None,
-) -> list:
+) -> list[ExperiencesTableItem]:
     """Get experience based on keywords for each filed."""
     return (
         db_session.query(ExperiencesTableItem)
@@ -91,14 +91,10 @@ def create_experience(
 
 def update_experience(
     db_session: Session,
+    experience: ExperiencesTableItem,
     experience_update_info: ExperienceUpdateInfo,
 ) -> ExperiencesTableItem:
     """Update values of an experience."""
-    experience = get_experience_by_id(
-        db_session=db_session,
-        experience_id=experience_update_info.experience_id,
-    )
-
     for key, value in experience_update_info.model_dump().items():
         if value is not None:
             setattr(experience, key, value)
@@ -109,10 +105,10 @@ def update_experience(
     return experience
 
 
-def delete_experience(db_session: Session, experience_id: str) -> ExperiencesTableItem:
+def delete_experience(
+    db_session: Session, experience: ExperiencesTableItem
+) -> ExperiencesTableItem:
     """Delete experience."""
-    experience = get_experience_by_id(db_session=db_session, experience_id=experience_id)
-
     db_session.delete(experience)
     db_session.commit()
 
