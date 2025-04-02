@@ -61,7 +61,6 @@ def get_experience_by_filter(
     db_session: Annotated[Session, Depends(data.get_db_session)],
     limit: int = 10,
     skip: int = 0,
-    experience: str | None = "",
     title: str | None = "",
     description: str | None = "",
     location: str | None = "",
@@ -94,6 +93,7 @@ def get_experience_by_filter(
 
 @experiences_router.put("/{experience_id}", response_model=ExperienceResponse)
 def update_experience(
+    experience_id: str,
     experience_update_info: ExperienceUpdateInfo,
     verified_user: Annotated[UsersTableItem, Depends(endpoint_functions.get_verified_user)],
     db_session: Annotated[Session, Depends(data.get_db_session)],
@@ -101,7 +101,7 @@ def update_experience(
     """Update experience content."""
     experience = endpoint_functions.get_experience_by_id(
         db_session=db_session,
-        experience_id=experience_update_info.experience_id,
+        experience_id=experience_id,
     )
 
     if experience is None:
