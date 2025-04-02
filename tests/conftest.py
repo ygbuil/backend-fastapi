@@ -38,7 +38,7 @@ def test_user_1(client: TestClient) -> dict[str, Any]:
 
     assert response.status_code == status.HTTP_201_CREATED
 
-    test_user_1 = response.json()
+    test_user_1: dict[str, Any] = response.json()
     test_user_1["password"] = "pw1"  # noqa: S105
 
     return test_user_1
@@ -61,7 +61,7 @@ def test_user_2(client: TestClient) -> dict[str, Any]:
 
     assert response.status_code == status.HTTP_201_CREATED
 
-    test_user_2 = response.json()
+    test_user_2: dict[str, Any] = response.json()
     test_user_2["password"] = "pw2"  # noqa: S105
 
     return test_user_2
@@ -92,7 +92,7 @@ def test_token_2(test_user_2: dict[str, Any]) -> str:
 @pytest.fixture
 def test_experience_1(client: TestClient, test_token_1: str) -> Any | dict[str, Any]:
     """Experience written by testing user number 1."""
-    client.headers = {**client.headers, "Authorization": f"Bearer {test_token_1}"}
+    client.headers["Authorization"] = f"Bearer {test_token_1}"
 
     response = client.post(
         "/experiences",

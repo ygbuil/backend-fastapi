@@ -39,7 +39,7 @@ def test_get_acess_token(client: TestClient, test_user_1: dict[str, Any]) -> Non
 
 def test_update_user(client: TestClient, test_user_1: dict[str, Any], test_token_1: str) -> None:
     """Test update user."""
-    client.headers = {**client.headers, "Authorization": f"Bearer {test_token_1}"}
+    client.headers["Authorization"] = f"Bearer {test_token_1}"
 
     response = client.put(
         f"/users/{test_user_1['user_id']}",
@@ -81,7 +81,7 @@ def test_update_user_unauthorized(
 
 def test_delete_user(client: TestClient, test_user_1: dict[str, Any], test_token_1: str) -> None:
     """Test delete user."""
-    client.headers = {**client.headers, "Authorization": f"Bearer {test_token_1}"}
+    client.headers["Authorization"] = f"Bearer {test_token_1}"
 
     response = client.delete(f"/users/{test_user_1['user_id']}")
 

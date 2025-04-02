@@ -1,6 +1,6 @@
 """Users endpoints."""
 
-from typing import Annotated
+from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
@@ -15,7 +15,7 @@ users_router = APIRouter(prefix="/users")
 def create_user(
     user_to_create: NewUser,
     db_session: Annotated[Session, Depends(data.get_db_session)],
-) -> dict:
+) -> dict[str, Any]:
     """Create user endpoint."""
     user = endpoint_functions.get_user_by_name(
         db_session=db_session,
@@ -29,7 +29,9 @@ def create_user(
 
 
 @users_router.get("/{user_id}", response_model=UserResponse)
-def get_user(user_id: str, db_session: Annotated[Session, Depends(data.get_db_session)]) -> dict:
+def get_user(
+    user_id: str, db_session: Annotated[Session, Depends(data.get_db_session)]
+) -> dict[str, Any]:
     """Get user endpoint."""
     user = endpoint_functions.get_user_by_id(db_session=db_session, user_id=user_id)
 
@@ -45,7 +47,7 @@ def update_user(
     user_update_info: UserUpdateInfo,
     verified_user: Annotated[UsersTableItem, Depends(endpoint_functions.get_verified_user)],
     db_session: Annotated[Session, Depends(data.get_db_session)],
-) -> dict:
+) -> dict[str, Any]:
     """Update user endpoint."""
     try:
         user_to_update = endpoint_functions.get_user_by_id(db_session=db_session, user_id=user_id)
@@ -69,7 +71,7 @@ def delete_user(
     user_id: str,
     verified_user: Annotated[UsersTableItem, Depends(endpoint_functions.get_verified_user)],
     db_session: Annotated[Session, Depends(data.get_db_session)],
-) -> dict:
+) -> dict[str, Any]:
     """Delete user endpoint."""
     user_to_delete = endpoint_functions.get_user_by_id(db_session=db_session, user_id=user_id)
 

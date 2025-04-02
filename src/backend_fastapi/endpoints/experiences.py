@@ -156,7 +156,9 @@ def delete_experience(
     )
 
 
-def _add_lifetime_to_experience(experience: ExperiencesTableItem, created_at: datetime) -> str:
+def _add_lifetime_to_experience(
+    experience: ExperiencesTableItem, created_at: datetime.datetime
+) -> str:
     """Calculate the time that happened since a experience was created."""
     days_dif = (datetime.datetime.now(tz=datetime.UTC) - created_at).days
 

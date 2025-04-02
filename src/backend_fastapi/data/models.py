@@ -11,7 +11,7 @@ from sqlalchemy.sql.sqltypes import TIMESTAMP
 from .database import Base
 
 
-class UsersTableItem(Base):
+class UsersTableItem(Base):  # type: ignore
     """Data model for table to store user data."""
 
     __tablename__ = "users"
@@ -26,7 +26,7 @@ class UsersTableItem(Base):
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
 
 
-class ExperiencesTableItem(Base):
+class ExperiencesTableItem(Base):  # type: ignore
     """Data model for table to store user experiences."""
 
     __tablename__ = "experiences"

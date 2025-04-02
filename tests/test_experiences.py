@@ -10,7 +10,7 @@ _NEW_RATING = 4
 
 def test_create_experience(client: TestClient, test_token_1: str) -> None:
     """Test create experience."""
-    client.headers = {**client.headers, "Authorization": f"Bearer {test_token_1}"}
+    client.headers["Authorization"] = f"Bearer {test_token_1}"
 
     response = client.post(
         "/experiences",
@@ -31,7 +31,7 @@ def test_update_experience(
     client: TestClient, test_experience_1: dict[str, Any], test_token_1: str
 ) -> None:
     """Test update experience."""
-    client.headers = {**client.headers, "Authorization": f"Bearer {test_token_1}"}
+    client.headers["Authorization"] = f"Bearer {test_token_1}"
 
     response = client.put(
         f"/experiences/{test_experience_1['experience_id']}",
@@ -77,7 +77,7 @@ def test_delete_experience(
     client: TestClient, test_experience_1: dict[str, Any], test_token_1: str
 ) -> None:
     """Test delete experience."""
-    client.headers = {**client.headers, "Authorization": f"Bearer {test_token_1}"}
+    client.headers["Authorization"] = f"Bearer {test_token_1}"
 
     response = client.delete(f"/experiences/{test_experience_1['experience_id']}")
 
