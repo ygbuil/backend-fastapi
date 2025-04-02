@@ -30,10 +30,10 @@ def get_user_by_id(db_session: Session, user_id: str) -> UsersTableItem | None:
     return db_session.query(UsersTableItem).filter(UsersTableItem.user_id == user_id).first()
 
 
-def update_user(db_session: Session, user_update_info: UserUpdateInfo) -> UsersTableItem:
+def update_user(
+    db_session: Session, user: UsersTableItem, user_update_info: UserUpdateInfo
+) -> UsersTableItem:
     """Update user info and write it to database."""
-    user = get_user_by_id(db_session, user_update_info.user_id)
-
     for key, value in user_update_info.model_dump().items():
         if value is not None:
             setattr(user, key, value)
@@ -44,10 +44,8 @@ def update_user(db_session: Session, user_update_info: UserUpdateInfo) -> UsersT
     return user
 
 
-def delete_user(db_session: Session, user_id: str) -> UsersTableItem:
+def delete_user(db_session: Session, user: str) -> UsersTableItem:
     """Create user from database."""
-    user = get_user_by_id(db_session=db_session, user_id=user_id)
-
     db_session.delete(user)
     db_session.commit()
 
@@ -56,4 +54,4 @@ def delete_user(db_session: Session, user_id: str) -> UsersTableItem:
 
 def _hash_password(password: str) -> str:
     """Hash password."""
-    return PWD_CONTEXT.hash(password)
+    return PWD_CONTEXT.hash(password)  # type: ignore

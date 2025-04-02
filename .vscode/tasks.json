@@ -7,11 +7,10 @@
             "command": "uv",
             "args": [
                 "run",
-                "uvicorn",
-                "app.app:app",
+                "backend-fastapi",
+                "run-app",
                 "--host", "127.0.0.1",
-                "--port", "5500",
-                "--reload"
+                "--port", "8000",
             ],
             "problemMatcher": []
         }

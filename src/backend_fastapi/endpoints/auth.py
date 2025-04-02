@@ -42,4 +42,4 @@ def login(
 
 def _verify_password(plain_password: str, hashed_password: str) -> bool:
     """Verify plain text password matches hashed password."""
-    return PWD_CONTEXT.verify(plain_password, hashed_password)
+    return PWD_CONTEXT.verify(plain_password, hashed_password)  # type: ignore

@@ -50,20 +50,22 @@ def update_user(
 ) -> dict[str, Any]:
     """Update user endpoint."""
     try:
-        user_to_update = endpoint_functions.get_user_by_id(db_session=db_session, user_id=user_id)
+        user = endpoint_functions.get_user_by_id(db_session=db_session, user_id=user_id)
     except Exception as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Bad request") from exc
 
-    if user_to_update is None:
+    if user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-    if str(verified_user.user_id) != str(user_to_update.user_id):
+    if str(verified_user.user_id) != str(user.user_id):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to perform requested action",
         )
 
-    return endpoint_functions.update_user(db_session=db_session, user_update_info=user_update_info)
+    return endpoint_functions.update_user(
+        db_session=db_session, user=user, user_update_info=user_update_info
+    )
 
 
 @users_router.delete("/{user_id}", response_model=UserResponse)
@@ -73,15 +75,15 @@ def delete_user(
     db_session: Annotated[Session, Depends(data.get_db_session)],
 ) -> dict[str, Any]:
     """Delete user endpoint."""
-    user_to_delete = endpoint_functions.get_user_by_id(db_session=db_session, user_id=user_id)
+    user = endpoint_functions.get_user_by_id(db_session=db_session, user_id=user_id)
 
-    if user_to_delete is None:
+    if user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-    if str(verified_user.user_id) != str(user_to_delete.user_id):
+    if str(verified_user.user_id) != str(user.user_id):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to perform requested action",
         )
 
-    return endpoint_functions.delete_user(db_session=db_session, user_id=user_to_delete.user_id)
+    return endpoint_functions.delete_user(db_session=db_session, user=user)

@@ -13,7 +13,7 @@ from backend_fastapi.data import (
 )
 
 
-def get_experience_by_id(db_session: Session, experience_id: str) -> ExperiencesTableItem:
+def get_experience_by_id(db_session: Session, experience_id: str) -> ExperiencesTableItem | None:
     """Get experience based on provided experience_id."""
     return (
         db_session.query(ExperiencesTableItem)
