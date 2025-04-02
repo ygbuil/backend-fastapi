@@ -9,7 +9,8 @@ from fastapi.testclient import TestClient
 
 from backend_fastapi import endpoint_functions
 from backend_fastapi.data import Base
-from tests.database import app, engine
+from backend_fastapi.entry_points import app
+from tests.database import engine
 
 
 @pytest.fixture

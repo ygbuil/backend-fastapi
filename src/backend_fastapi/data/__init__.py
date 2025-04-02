@@ -1,8 +1,8 @@
 """__init__.py for data package."""
 
 from .config import settings
-from .database import get_db_session
-from .models import Base, ExperiencesTableItem, UsersTableItem
+from .database import Base, get_db_session
+from .models import ExperiencesTableItem, UsersTableItem
 from .schemas import (
     ExperienceFilters,
     ExperienceResponse,
