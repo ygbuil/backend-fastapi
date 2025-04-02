@@ -73,7 +73,6 @@ def get_experience_by_filter(
         db_session=db_session,
         limit=limit,
         skip=skip,
-        experience=experience,
         title=title,
         description=description,
         location=location,

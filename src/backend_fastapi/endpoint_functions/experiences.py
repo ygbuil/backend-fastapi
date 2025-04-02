@@ -1,7 +1,6 @@
 """Funtions that deal with experiences."""
 
 from fastapi import HTTPException, status
-from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from backend_fastapi.data import (
@@ -28,7 +27,6 @@ def get_experience_by_filters(
     db_session: Session,
     limit: int | None,
     skip: int | None,
-    experience: str | None,
     title: str | None,
     description: str | None,
     location: str | None,
@@ -36,31 +34,21 @@ def get_experience_by_filters(
     rating: int | None,
 ) -> list[ExperiencesTableItem]:
     """Get experience based on keywords for each filed."""
+    filters = []
+    if title:
+        filters.append(ExperiencesTableItem.title.contains(title))
+    if description:
+        filters.append(ExperiencesTableItem.description.contains(description))
+    if location:
+        filters.append(ExperiencesTableItem.location.contains(location))
+    if user:
+        filters.append(ExperiencesTableItem.owner.has(UsersTableItem.username.contains(user)))
+    if rating is not None:
+        filters.append(ExperiencesTableItem.rating == rating)
+
     return (
         db_session.query(ExperiencesTableItem)
-        .filter(
-            *(
-                [ExperiencesTableItem.title.contains(title)]
-                if title
-                else [] + [ExperiencesTableItem.description.contains(description)]
-                if description
-                else []
-                + [
-                    or_(
-                        ExperiencesTableItem.description.contains(experience),
-                        ExperiencesTableItem.title.contains(experience),
-                    ),
-                ]
-                if experience
-                else [] + [ExperiencesTableItem.location.contains(location)]
-                if location
-                else [] + [ExperiencesTableItem.owner.has(UsersTableItem.username.contains(user))]
-                if user
-                else [] + [ExperiencesTableItem.rating == rating]
-                if rating
-                else []
-            ),
-        )
+        .filter(*filters)
         .order_by(ExperiencesTableItem.created_at.desc())
         .limit(limit)
         .offset(skip)
