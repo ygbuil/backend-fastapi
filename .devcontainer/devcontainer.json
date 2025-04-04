@@ -1,8 +1,8 @@
 {
     "name": "Debian with Git and UV",
-    "build": {
-        "dockerfile": "Dockerfile"
-    },
+    "dockerComposeFile": "../docker-compose.yaml",
+    "service": "dev",
+    "workspaceFolder": "/workspace",
     "postCreateCommand": "/bin/bash .devcontainer/post-create.sh",
     "customizations": {
         "vscode": {
