@@ -25,6 +25,7 @@ Here are some snippeds of how the app looks like:
 
 ## How to use it
 
+* Create a `.env` file in the root directory following the `.env_example`.
 * Open the project and `Rebuild in Container`. All dependecies and databases will be built automatically.
 * To inspect the databases, run on terminal:
     - Principal DB: `psql $DATABASE_URL` 

@@ -8,10 +8,8 @@ services:
     working_dir: /workspace
     command: sleep infinity
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/mydatabase
-      DATABASE_URL_TEST: postgresql://postgres:postgres@db-test:5432/mydatabase_test
-    depends_on:
-      - db
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/xplorer
+      DATABASE_URL_TEST: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db-test:5432/xplorer_test
     ports:
       - "8000:8000"
     networks:
@@ -21,13 +19,11 @@ services:
     image: postgres:15
     restart: unless-stopped
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: mydatabase
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: xplorer
     ports:
       - "5432:5432"
-    volumes:
-      - /var/lib/postgresql/data  # Anonymous volume
     networks:
       - devnet
 
@@ -35,9 +31,9 @@ services:
     image: postgres:15
     restart: unless-stopped
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: mydatabase_test
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: xplorer_test
     ports:
       - "5433:5432"
     networks:
