@@ -25,10 +25,7 @@ Here are some snippeds of how the app looks like:
 
 ## How to use it
 
-* Clone the repository.
-* Open the project in the devcontainer (very easy with VSCode).
-* Create a PostgreSQL database named `xplorer` (main one) and another named `xplorer_test` (testing one).
-* Start your PostgreSQL database and create a `.env` file in the root directory of the project defining your database credentials there (a template called `.env_dummy` has been provided).
-* Run `python db_init.py` to autmatically create the tables that the project uses in your PostgreSQL.
-* Run `uvicorn app.app:app --port 5500 --reload` in the source directory of the project to strat the backend service.
-* To run test, you can run the `pytest` command in the source directory of the project.
+* Open the project and `Rebuild in Container`. All dependecies and databases will be built automatically.
+* To inspect the databases, run on terminal:
+    - Principal DB: `psql $DATABASE_URL` 
+    - Test DB: `psql $DATABASE_URL_TEST`

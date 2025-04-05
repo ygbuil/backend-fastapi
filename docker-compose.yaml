@@ -8,7 +8,8 @@ services:
     working_dir: /workspace
     command: sleep infinity
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/mydatabase
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/mydatabase
+      DATABASE_URL_TEST: postgresql://postgres:postgres@db-test:5432/mydatabase_test
     depends_on:
       - db
     ports:

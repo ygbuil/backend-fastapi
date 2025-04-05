@@ -1,26 +1,18 @@
 """Module to create database tables."""
 
+import os
 from collections.abc import Generator
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, declarative_base, sessionmaker
 
 from backend_fastapi import data
-from backend_fastapi.data import settings
 from backend_fastapi.entry_points import app
 
-SQLALCHEMY_DATABASE_URL = (
-    f"postgresql://{settings.db_user}:{settings.db_password}"
-    f"@{settings.db_host}-test:{settings.db_port}/{settings.db_name}_test"
-)
+engine = create_engine(os.getenv("DATABASE_URL_TEST"))  # type: ignore
 
-# create engine to interact with DB
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
-
-# create class to create session
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# used to define DB architecture
 Base = declarative_base()
 
 
