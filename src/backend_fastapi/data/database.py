@@ -21,9 +21,6 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 # used to define DB architecture
 Base = declarative_base()
 
-# create DB
-Base.metadata.create_all(bind=engine)  # type: ignore
-
 
 def get_db_session() -> Generator[Session]:
     """Create a session with SessionLocal."""
