@@ -1,6 +1,3 @@
-# ./docker-compose.yml
-version: '3.8'
-
 services:
   dev:
     build:
@@ -15,7 +12,7 @@ services:
     depends_on:
       - db
     ports:
-      - "8000:8000"  # Only needed if you want to expose FastAPI
+      - "8000:8000"
     networks:
       - devnet
 
@@ -29,12 +26,12 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - /var/lib/postgresql/data  # Anonymous volume
     networks:
       - devnet
 
 volumes:
-  postgres_data:
+  postgres_data: {}  # You can remove this completely if using anonymous volume
 
 networks:
   devnet:
