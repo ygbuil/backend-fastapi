@@ -11,7 +11,7 @@ from backend_fastapi.entry_points import app
 
 SQLALCHEMY_DATABASE_URL = (
     f"postgresql://{settings.db_user}:{settings.db_password}"
-    f"@{settings.db_host}:{settings.db_port}/{settings.db_name}_test"
+    f"@{settings.db_host}-test:{settings.db_port}/{settings.db_name}_test"
 )
 
 # create engine to interact with DB
@@ -22,9 +22,6 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engin
 
 # used to define DB architecture
 Base = declarative_base()
-
-# create DB
-Base.metadata.create_all(bind=engine)  # type: ignore
 
 
 def override_get_db_session() -> Generator[Session]:
