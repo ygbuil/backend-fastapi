@@ -14,12 +14,12 @@ from backend_fastapi import data
 from backend_fastapi.data import UsersTableItem, settings
 from backend_fastapi.endpoint_functions import users
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+TOKEN_EXPIRATION_TIME = 120
 
 
-def create_token(user_id: UUID, expiration_time: timedelta) -> str:
+def create_token(user_id: UUID) -> str:
     """Create token for the user."""
-    expire_date = datetime.datetime.now(tz=datetime.UTC) + expiration_time
+    expire_date = datetime.datetime.now(tz=datetime.UTC) + timedelta(minutes=TOKEN_EXPIRATION_TIME)
     return jwt.encode(  # type: ignore
         {
             "user_id": str(user_id),
@@ -31,7 +31,7 @@ def create_token(user_id: UUID, expiration_time: timedelta) -> str:
 
 
 def get_verified_user(
-    token: Annotated[str, Depends(oauth2_scheme)],
+    token: Annotated[str, Depends(OAuth2PasswordBearer(tokenUrl="token"))],
     db_session: Annotated[Session, Depends(data.get_db_session)],
 ) -> UsersTableItem | None:
     """Get the authorised user for the received token."""

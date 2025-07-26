@@ -1,6 +1,5 @@
 """Auth endpoints."""
 
-from datetime import timedelta
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -28,7 +27,6 @@ def login(
 
     access_token = endpoint_functions.create_token(
         user_id=user.user_id,  # type: ignore
-        expiration_time=timedelta(minutes=30),
     )
 
     return {"access_token": access_token, "token_type": "bearer"}

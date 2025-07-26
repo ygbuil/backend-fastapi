@@ -1,6 +1,5 @@
 """Fixtures for testing."""
 
-from datetime import timedelta
 from typing import Any
 
 import pytest
@@ -73,7 +72,6 @@ def test_token_1(test_user_1: dict[str, Any]) -> str:
     """Token for testing user number 1."""
     return endpoint_functions.create_token(
         user_id=test_user_1["user_id"],
-        expiration_time=timedelta(minutes=30),
     )
 
 
@@ -82,7 +80,6 @@ def test_token_2(test_user_2: dict[str, Any]) -> str:
     """Token for testing user number 2."""
     return endpoint_functions.create_token(
         user_id=test_user_2["user_id"],
-        expiration_time=timedelta(minutes=30),
     )
 
 
