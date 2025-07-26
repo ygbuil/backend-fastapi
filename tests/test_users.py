@@ -30,7 +30,9 @@ def test_get_acess_token(client: TestClient, test_user_1: dict[str, Any]) -> Non
         data={
             "username": test_user_1["username"],
             "password": test_user_1["password"],
-            "grant_type": "password",
+        },
+        headers={
+            "Content-Type": "application/x-www-form-urlencoded",
         },
     )
 
