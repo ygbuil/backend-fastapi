@@ -6,7 +6,7 @@ from uuid import UUID
 from pydantic import BaseModel
 
 
-class NewUser(BaseModel):
+class RegisterUserForm(BaseModel):
     """NewExperience schema."""
 
     username: str
@@ -17,7 +17,7 @@ class NewUser(BaseModel):
     password: str
 
 
-class ExistingUser(NewUser):
+class User(RegisterUserForm):
     """NewExperience schema."""
 
     user_id: UUID
@@ -55,7 +55,7 @@ class ExperienceResponse(NewExperience):
     created_at: datetime
     lifetime: str
 
-    owner: ExistingUser
+    owner: User
 
     class Config:
         """Config."""

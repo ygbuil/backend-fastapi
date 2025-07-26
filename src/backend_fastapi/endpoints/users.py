@@ -6,16 +6,16 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from backend_fastapi import data, endpoint_functions
-from backend_fastapi.data import ExistingUser, NewUser, UsersTableItem, UserUpdateInfo
+from backend_fastapi.data import RegisterUserForm, User, UsersTableItem, UserUpdateInfo
 
 users_router = APIRouter(prefix="/users")
 
 
 @users_router.post("", status_code=status.HTTP_201_CREATED)
 def create_user(
-    user_to_create: NewUser,
+    user_to_create: RegisterUserForm,
     db_session: Annotated[Session, Depends(data.get_db_session)],
-) -> ExistingUser:
+) -> User:
     """Create user endpoint."""
     user = endpoint_functions.get_user_by_name(
         db_session=db_session,
@@ -29,9 +29,7 @@ def create_user(
 
 
 @users_router.get("/{user_id}")
-def get_user(
-    user_id: str, db_session: Annotated[Session, Depends(data.get_db_session)]
-) -> ExistingUser:
+def get_user(user_id: str, db_session: Annotated[Session, Depends(data.get_db_session)]) -> User:
     """Get user endpoint."""
     user = endpoint_functions.get_user_by_id(db_session=db_session, user_id=user_id)
 
@@ -47,7 +45,7 @@ def update_user(
     user_update_info: UserUpdateInfo,
     verified_user: Annotated[UsersTableItem, Depends(endpoint_functions.get_verified_user)],
     db_session: Annotated[Session, Depends(data.get_db_session)],
-) -> ExistingUser:
+) -> User:
     """Update user endpoint."""
     try:
         user = endpoint_functions.get_user_by_id(db_session=db_session, user_id=user_id)
@@ -73,7 +71,7 @@ def delete_user(
     user_id: str,
     verified_user: Annotated[UsersTableItem, Depends(endpoint_functions.get_verified_user)],
     db_session: Annotated[Session, Depends(data.get_db_session)],
-) -> ExistingUser:
+) -> User:
     """Delete user endpoint."""
     user = endpoint_functions.get_user_by_id(db_session=db_session, user_id=user_id)
 

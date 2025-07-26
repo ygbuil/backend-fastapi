@@ -3,10 +3,10 @@
 from sqlalchemy.orm import Session
 
 from backend_fastapi import PWD_CONTEXT
-from backend_fastapi.data import NewUser, UsersTableItem, UserUpdateInfo
+from backend_fastapi.data import RegisterUserForm, UsersTableItem, UserUpdateInfo
 
 
-def create_user(db_session: Session, user_to_create: NewUser) -> UsersTableItem:
+def create_user(db_session: Session, user_to_create: RegisterUserForm) -> UsersTableItem:
     """Create a user and write it to database."""
     user_to_create.password = PWD_CONTEXT.hash(user_to_create.password)
     new_user = UsersTableItem(**user_to_create.model_dump())

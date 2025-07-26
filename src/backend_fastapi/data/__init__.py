@@ -4,24 +4,24 @@ from .config import settings
 from .database import Base, get_db_session
 from .models import ExperiencesTableItem, UsersTableItem
 from .schemas import (
-    ExistingUser,
     ExperienceFilters,
     ExperienceResponse,
     ExperienceUpdateInfo,
     NewExperience,
-    NewUser,
+    RegisterUserForm,
+    User,
     UserUpdateInfo,
 )
 
 __all__ = [
     "Base",
-    "ExistingUser",
     "ExperienceFilters",
     "ExperienceResponse",
     "ExperienceUpdateInfo",
     "ExperiencesTableItem",
     "NewExperience",
-    "NewUser",
+    "RegisterUserForm",
+    "User",
     "UserUpdateInfo",
     "UsersTableItem",
     "get_db_session",
