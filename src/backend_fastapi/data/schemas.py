@@ -24,23 +24,6 @@ class User(NewUser):
     created_at: datetime
 
 
-class UserResponse(BaseModel):
-    """NewExperience data model."""
-
-    user_id: UUID
-    username: str
-    color: str
-    location: str
-    lat: float
-    lon: float
-    created_at: datetime
-
-    class Config:
-        """Config."""
-
-        from_attributes = True
-
-
 class UserUpdateInfo(BaseModel):
     """UserUpdateInfo schema."""
 
@@ -72,7 +55,7 @@ class ExperienceResponse(NewExperience):
     created_at: datetime
     lifetime: str
 
-    owner: UserResponse
+    owner: User
 
     class Config:
         """Config."""

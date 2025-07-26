@@ -10,7 +10,6 @@ from .schemas import (
     NewExperience,
     NewUser,
     User,
-    UserResponse,
     UserUpdateInfo,
 )
 
@@ -23,7 +22,6 @@ __all__ = [
     "NewExperience",
     "NewUser",
     "User",
-    "UserResponse",
     "UserUpdateInfo",
     "UsersTableItem",
     "get_db_session",
