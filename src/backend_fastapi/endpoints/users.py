@@ -1,6 +1,6 @@
 """Users endpoints."""
 
-from typing import Annotated, Any
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
@@ -11,11 +11,11 @@ from backend_fastapi.data import NewUser, UserResponse, UsersTableItem, UserUpda
 users_router = APIRouter(prefix="/users")
 
 
-@users_router.post("", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+@users_router.post("", status_code=status.HTTP_201_CREATED)
 def create_user(
     user_to_create: NewUser,
     db_session: Annotated[Session, Depends(data.get_db_session)],
-) -> dict[str, Any]:
+) -> UserResponse:
     """Create user endpoint."""
     user = endpoint_functions.get_user_by_name(
         db_session=db_session,
@@ -28,10 +28,10 @@ def create_user(
     return endpoint_functions.create_user(db_session=db_session, user_to_create=user_to_create)
 
 
-@users_router.get("/{user_id}", response_model=UserResponse)
+@users_router.get("/{user_id}")
 def get_user(
     user_id: str, db_session: Annotated[Session, Depends(data.get_db_session)]
-) -> dict[str, Any]:
+) -> UserResponse:
     """Get user endpoint."""
     user = endpoint_functions.get_user_by_id(db_session=db_session, user_id=user_id)
 
@@ -41,13 +41,13 @@ def get_user(
     return user
 
 
-@users_router.put("/{user_id}", response_model=UserResponse)
+@users_router.put("/{user_id}")
 def update_user(
     user_id: str,
     user_update_info: UserUpdateInfo,
     verified_user: Annotated[UsersTableItem, Depends(endpoint_functions.get_verified_user)],
     db_session: Annotated[Session, Depends(data.get_db_session)],
-) -> dict[str, Any]:
+) -> UserResponse:
     """Update user endpoint."""
     try:
         user = endpoint_functions.get_user_by_id(db_session=db_session, user_id=user_id)
@@ -68,12 +68,12 @@ def update_user(
     )
 
 
-@users_router.delete("/{user_id}", response_model=UserResponse)
+@users_router.delete("/{user_id}")
 def delete_user(
     user_id: str,
     verified_user: Annotated[UsersTableItem, Depends(endpoint_functions.get_verified_user)],
     db_session: Annotated[Session, Depends(data.get_db_session)],
-) -> dict[str, Any]:
+) -> UserResponse:
     """Delete user endpoint."""
     user = endpoint_functions.get_user_by_id(db_session=db_session, user_id=user_id)
 
