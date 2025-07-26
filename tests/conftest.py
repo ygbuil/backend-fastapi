@@ -72,9 +72,7 @@ def test_user_2(client: TestClient) -> dict[str, Any]:
 def test_token_1(test_user_1: dict[str, Any]) -> str:
     """Token for testing user number 1."""
     return endpoint_functions.create_token(
-        username=test_user_1["username"],
         user_id=test_user_1["user_id"],
-        color=test_user_1["color"],
         expiration_time=timedelta(minutes=30),
     )
 
@@ -83,9 +81,7 @@ def test_token_1(test_user_1: dict[str, Any]) -> str:
 def test_token_2(test_user_2: dict[str, Any]) -> str:
     """Token for testing user number 2."""
     return endpoint_functions.create_token(
-        username=test_user_2["username"],
         user_id=test_user_2["user_id"],
-        color=test_user_2["color"],
         expiration_time=timedelta(minutes=30),
     )
 

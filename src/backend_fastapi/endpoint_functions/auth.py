@@ -17,14 +17,12 @@ from backend_fastapi.endpoint_functions import users
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
-def create_token(username: str, user_id: UUID, color: str, expiration_time: timedelta) -> str:
+def create_token(user_id: UUID, expiration_time: timedelta) -> str:
     """Create token for the user."""
     expire_date = datetime.datetime.now(tz=datetime.UTC) + expiration_time
     return jwt.encode(  # type: ignore
         {
-            "username": username,
             "user_id": str(user_id),
-            "color": str(color),
             "exp": expire_date,
         },
         key=settings.secret_key,

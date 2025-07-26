@@ -27,9 +27,7 @@ def login(
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect password")
 
     access_token = endpoint_functions.create_token(
-        username=user.username,  # type: ignore
         user_id=user.user_id,  # type: ignore
-        color=user.color,  # type: ignore
         expiration_time=timedelta(minutes=30),
     )
 
