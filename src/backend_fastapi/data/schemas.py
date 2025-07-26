@@ -17,7 +17,7 @@ class NewUser(BaseModel):
     password: str
 
 
-class User(NewUser):
+class ExistingUser(NewUser):
     """NewExperience schema."""
 
     user_id: UUID
@@ -55,7 +55,7 @@ class ExperienceResponse(NewExperience):
     created_at: datetime
     lifetime: str
 
-    owner: User
+    owner: ExistingUser
 
     class Config:
         """Config."""

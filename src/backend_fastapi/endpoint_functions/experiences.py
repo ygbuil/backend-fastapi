@@ -4,10 +4,10 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from backend_fastapi.data import (
+    ExistingUser,
     ExperiencesTableItem,
     ExperienceUpdateInfo,
     NewExperience,
-    User,
     UsersTableItem,
 )
 
@@ -58,7 +58,7 @@ def get_experience_by_filters(
 
 def create_experience(
     db_session: Session,
-    verified_user: User,
+    verified_user: ExistingUser,
     experience_to_create: NewExperience,
 ) -> ExperiencesTableItem:
     """Create a new experience."""
