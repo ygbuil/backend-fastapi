@@ -17,12 +17,10 @@ def create_user(
     db_session: Annotated[Session, Depends(data.get_db_session)],
 ) -> User:
     """Create user endpoint."""
-    user = endpoint_functions.get_user_by_name(
+    if endpoint_functions.get_user_by_name(
         db_session=db_session,
         username=user_to_create.username,
-    )
-
-    if user is not None:
+    ):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="User already exists")
 
     return endpoint_functions.create_user(db_session=db_session, user_to_create=user_to_create)

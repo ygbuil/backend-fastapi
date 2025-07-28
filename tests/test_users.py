@@ -23,6 +23,23 @@ def test_create_user(client: TestClient) -> None:
     assert response.status_code == status.HTTP_201_CREATED
 
 
+def test_create_user_conflict(client: TestClient, test_user_1: dict[str, Any]) -> None:  # noqa: ARG001
+    """Test create user."""
+    response = client.post(
+        "/users",
+        json={
+            "username": "user_1",
+            "password": "123",
+            "location": "test_location",
+            "lat": 12.58658855,
+            "lon": 54.39338383,
+            "color": "test_color",
+        },
+    )
+
+    assert response.status_code == status.HTTP_409_CONFLICT
+
+
 def test_get_acess_token(client: TestClient, test_user_1: dict[str, Any]) -> None:
     """Test get access token."""
     response = client.post(
