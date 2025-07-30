@@ -1,14 +1,16 @@
 """Functions that deal with users."""
 
+import bcrypt
 from sqlalchemy.orm import Session
 
-from backend_fastapi import PWD_CONTEXT
 from backend_fastapi.data import RegisterUserForm, UsersTableItem, UserUpdateInfo
 
 
 def create_user(db_session: Session, user_to_create: RegisterUserForm) -> UsersTableItem:
     """Create a user and write it to database."""
-    user_to_create.password = PWD_CONTEXT.hash(user_to_create.password)
+    user_to_create.password = bcrypt.hashpw(
+        user_to_create.password.encode("utf-8"), bcrypt.gensalt()
+    ).decode("utf-8")
     new_user = UsersTableItem(**user_to_create.model_dump())
 
     db_session.add(new_user)

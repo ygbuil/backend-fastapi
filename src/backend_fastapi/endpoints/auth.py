@@ -2,11 +2,12 @@
 
 from typing import Annotated
 
+import bcrypt
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
-from backend_fastapi import PWD_CONTEXT, data, endpoint_functions
+from backend_fastapi import data, endpoint_functions
 
 auth_router = APIRouter()
 
@@ -22,7 +23,7 @@ def login(
     if user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
-    if not PWD_CONTEXT.verify(form_data.password, user.password):
+    if not bcrypt.checkpw(form_data.password.encode("utf-8"), user.password.encode("utf-8")):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect password")
 
     access_token = endpoint_functions.create_token(
